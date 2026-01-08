@@ -8,7 +8,7 @@ const COZE_CONFIG = {
 };
 
 // =================================================================
-// 導航邏輯 (全 14 題)
+// 導航邏輯 (14 題)
 // =================================================================
 let currentStep = 0;
 const totalSteps = 14; 
@@ -49,7 +49,6 @@ function submitForm() {
         document.getElementById('progressContainer').classList.add('hidden');
         document.getElementById('formContainer').classList.add('hidden');
         
-        // 顯示結果頁
         document.getElementById('resultsContainer').classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -65,12 +64,18 @@ async function runCozeAnalysis() {
     const btn = document.getElementById('analyzeBtn');
     const resultArea = document.getElementById('resultArea');
 
+    // 再次檢查 Key 是否為空 (雙重保險)
+    if (!COZE_CONFIG.api_token || !COZE_CONFIG.bot_id) {
+        resultArea.style.display = 'block';
+        resultArea.innerHTML = "<span style='color:red;'>❌ 錯誤：API Key 未設定。</span>";
+        return;
+    }
+
     btn.disabled = true;
     btn.innerHTML = `<span style="font-style:italic;">⚡ 正在校準 TimeWaver 頻率...</span>`;
     resultArea.style.display = 'block';
     resultArea.innerHTML = ""; 
     
-    // 去名化文字
     await typeWriterSimple("正在連結初八企業顧問大腦...\n讀取高維度管理模型資料庫...\n校準 B2 場域能量參數...\n--------------------------------\n", resultArea);
 
     const diagnosisData = {
@@ -99,16 +104,30 @@ async function runCozeAnalysis() {
 
         const data = await response.json();
 
+        // 檢查 Coze 是否回傳錯誤代碼
+        if (data.code && data.code !== 0) {
+            throw new Error(`API Error ${data.code}: ${data.msg}`);
+        }
+
         if (data && data.messages) {
             const aiMessage = data.messages.find(msg => msg.type === 'answer');
             if (aiMessage) {
                 btn.innerHTML = "✅ 分析完成";
                 typeWriterEffect(aiMessage.content, resultArea);
+            } else {
+                // 有時候 Coze 會回傳 type: 'verbose' 或其他，這裡做容錯
+                const backupMsg = data.messages[0].content; 
+                btn.innerHTML = "✅ 分析完成";
+                typeWriterEffect(backupMsg, resultArea);
             }
+        } else {
+            console.log("Coze Response:", data); // 在 Console 印出完整回應以便除錯
+            throw new Error("API 回傳格式不如預期，請檢查 Console。");
         }
+
     } catch (error) {
-        console.error("Coze Error:", error);
-        resultArea.innerHTML += `\n\n⚠️ [演示模式] API 未連接。\n錯誤：${error.message}`;
+        console.error("Coze Error Details:", error);
+        resultArea.innerHTML += `\n\n<span style="color:red;">⚠️ 連線異常：${error.message}</span>`;
         btn.disabled = false;
         btn.innerHTML = "⚡ 重新啟動";
     }
@@ -119,7 +138,8 @@ function typeWriterSimple(text, element) {
 }
 function typeWriterEffect(text, element, index = 0) {
     if (index < text.length) {
-        element.innerHTML += (text.charAt(index) === '\n') ? '<br>' : text.charAt(index);
+        const char = text.charAt(index);
+        element.innerHTML += (char === '\n') ? '<br>' : char;
         element.scrollTop = element.scrollHeight;
         setTimeout(() => typeWriterEffect(text, element, index + 1), 30);
     }
@@ -157,7 +177,6 @@ function handleChoice(choice) {
         actionContainer.appendChild(btn);
 
     } else {
-        // 選項 B
         body.innerHTML = `
             <p><strong>${name} 您好，</strong></p>
             <p>您選擇僅獲取報告。我們已記錄需求。</p>
@@ -170,7 +189,7 @@ function handleChoice(choice) {
         btn.className = 'modal-btn';
         btn.style.background = '#64748b';
         btn.innerText = '👌 我知道了';
-        btn.onclick = closeModal; // 只關閉，不刷新
+        btn.onclick = closeModal;
         actionContainer.appendChild(btn);
     }
     
