@@ -48,9 +48,7 @@
                         <label class="form-label">公司規模</label>
                         <select class="form-select" id="companySize">
                             <option value="" disabled selected>請选擇</option>
-                            <option value="1-5">1-5人</option>
-                            <option value="6-20">6-20人</option>
-                            <option value="21-50">21-50人</option>
+                            <option value="1-5">1-5人</option><option value="6-20">6-20人</option><option value="21-50">21-50人</option>
                             <option value="51+">51人以上</option>
                         </select>
                     </div>
@@ -110,7 +108,7 @@
             </div>
 
             <div class="card step-card hidden" data-step="4">
-                <span class="step-badge">Q4 / 14</span><h2 class="card-title">拍板的事，落地執行通常需要幾次「來回修改」？</h2>
+                <span class="step-badge">Q4 / 14</span><h2 class="card-title">落地執行通常需要幾次「來回修改」？</h2>
                 <div class="scale-group">
                     <label class="scale-option"><input type="radio" name="q4" value="1"><div class="scale-label">一次到位</div></label>
                     <label class="scale-option"><input type="radio" name="q4" value="2"><div class="scale-label">偶爾確認</div></label>
@@ -286,11 +284,11 @@
         <div class="results-container hidden" id="resultsContainer">
             <div class="result-header">
                 <div class="result-icon-main" style="font-size:3rem;">🔮</div>
-                <h1 class="result-title">检测結果解讀</h1>
+                <div><h1 class="result-title">检测結果解讀</h1></div>
             </div>
 
             <div class="status-card" id="statusCard">
-                <div class="status-icon-large" style="font-size:2rem; margin-bottom:10px;">⚡</div>
+                <div class="status-icon-large" id="statusIcon" style="font-size:2rem; margin-bottom:10px;">⚡</div>
                 <div class="status-info">
                     <h2 id="statusTitle" style="margin:0 0 10px 0;">分析完成</h2>
                     <p id="statusDesc" style="margin:0;">您的企業能量瓶頸代碼已生成。</p>
@@ -310,7 +308,7 @@
             <div class="quantum-container" style="display:block !important;">
                 <div class="quantum-header">
                     <h3>🧬 量子信息場深度分析</h3>
-                    <p>系統已鎖定 B2 管理場域，點擊按鈕連結全球資料庫...</p>
+                    <p>系統已鎖定 B2 管理場域，準備連結全球管理資料庫...</p>
                 </div>
                 <button type="button" id="analyzeBtn" onclick="runCozeAnalysis()" class="quantum-btn">
                     <span class="btn-icon">⚡</span> 啟動 TimeWaver 核心運算
@@ -332,8 +330,8 @@
                         <span class="choice-action">「我想测試体質」 →</span>
                     </button>
                     <button type="button" class="choice-btn secondary" onclick="handleChoice('B')">
-                        <span class="choice-title">选项 B｜仅获取诊断报告</span>
-                        <span class="choice-desc">目前暂不进行测试。請將這份報告傳給我備份。</span>
+                        <span class="choice-title">选项 B｜僅获取诊断报告</span>
+                        <span class="choice-desc">目前暂不进行测试。请将这份瓶颈分析报告发送到我的邮箱备用。</span>
                         <span class="choice-action">「把报告发给我」</span>
                     </button>
                 </div>
