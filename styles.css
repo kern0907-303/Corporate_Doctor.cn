@@ -1,13 +1,12 @@
 :root {
-    /* 核心色系：參考您上傳的 UI Kit 與架構圖 */
-    --bg-deep: #0b1121;       /*極深藍背景*/
-    --bg-card: #151e32;       /*卡片背景*/
-    --primary: #3b82f6;       /*科技藍*/
+    --bg-deep: #0b1121;
+    --bg-card: #151e32;
+    --primary: #3b82f6;
     --primary-glow: rgba(59, 130, 246, 0.5);
-    --accent: #0ea5e9;        /*青色*/
-    --gold: #f59e0b;          /*金色/警告*/
-    --text-main: #f8fafc;     /*亮白文字*/
-    --text-sub: #94a3b8;      /*次要灰字*/
+    --accent: #0ea5e9;
+    --gold: #f59e0b;
+    --text-main: #f8fafc;
+    --text-sub: #94a3b8;
     --border: rgba(255, 255, 255, 0.1);
 }
 
@@ -26,13 +25,10 @@ body {
     min-height: 100vh;
 }
 
-/* 裝飾背景 */
-.bg-decoration { display: none; } /* 隱藏舊的背景 */
-
-/* 🟢 核心容器：電腦版放寬，手機版縮窄 */
+/* 🟢 核心容器 */
 .container {
     width: 100%;
-    max-width: 1100px; /* 電腦版寬度，讓儀表板能並排 */
+    max-width: 1100px;
     margin: 0 auto;
 }
 
@@ -51,15 +47,13 @@ body {
     box-shadow: 0 0 15px var(--primary-glow);
 }
 
-/* 進度條 */
+/* Progress */
 .progress-container { margin-bottom: 30px; }
 .progress-info { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-sub); margin-bottom: 8px; }
 .progress-bar { height: 6px; background: #1e293b; border-radius: 3px; overflow: hidden; }
 .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); box-shadow: 0 0 10px var(--primary); transition: width 0.4s ease; }
 
-/* =========================================
-   🎛️ 問卷卡片 (Form Style)
-   ========================================= */
+/* Cards (Form) */
 .card { 
     background: var(--bg-card); 
     border: 1px solid var(--border);
@@ -75,7 +69,7 @@ body {
 .card-title { font-size: 1.5rem; margin-top: 10px; color: #fff; }
 .card-desc { color: var(--text-sub); }
 
-/* 輸入框 */
+/* Form Elements */
 .form-label { display: block; margin-bottom: 8px; color: var(--text-sub); }
 .form-input, .form-select { 
     width: 100%; padding: 14px; 
@@ -92,7 +86,7 @@ body {
 }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
 
-/* 選項按鈕 (深色科技風) */
+/* Checkbox & Radio */
 .checkbox-group, .scale-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; }
 .checkbox-option, .scale-option { 
     display: flex; align-items: center; padding: 15px 20px; 
@@ -108,7 +102,7 @@ body {
 .checkbox-label, .scale-label { color: var(--text-main); font-size: 1rem; flex: 1; }
 .checkbox-option input, .scale-option input { margin-right: 15px; accent-color: var(--primary); transform: scale(1.2); }
 
-/* 按鈕 */
+/* Buttons */
 .btn-group { display: flex; gap: 15px; margin-top: 30px; }
 .btn { flex: 1; padding: 16px; border-radius: 12px; border: none; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
 .btn-primary { 
@@ -137,7 +131,6 @@ body {
     animation: fadeIn 0.8s;
 }
 
-/* 頂部標題與狀態 */
 .result-header { text-align: center; margin-bottom: 40px; }
 .result-title { font-size: 2rem; color: #fff; text-shadow: 0 0 20px var(--primary); }
 
@@ -154,9 +147,8 @@ body {
 #statusTitle { font-size: 1.6rem; margin: 0 0 5px 0; color: #fff; }
 #statusDesc { color: var(--accent); font-family: monospace; font-size: 1.1rem; }
 
-/* 🟢 [儀表板核心] 四段分析網格化 */
+/* 儀表板分析模組 */
 .interpretation-section {
-    /* 預設手機版：單欄堆疊 */
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -171,7 +163,6 @@ body {
     padding: 25px;
     border-radius: 16px;
     transition: transform 0.3s;
-    /* 讓卡片看起來像儀表板模組 */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -189,7 +180,6 @@ body {
 .insight-block p, .insight-block ul { color: #cbd5e1; font-size: 0.95rem; line-height: 1.6; margin: 0; }
 .insight-block ul { padding-left: 20px; margin-top: 10px; }
 
-/* Highlight 第四段 */
 .insight-block.highlight {
     border: 1px solid var(--gold);
     background: rgba(245, 158, 11, 0.05);
@@ -197,7 +187,7 @@ body {
 }
 .insight-block.highlight h3 { color: var(--gold); border-color: rgba(245, 158, 11, 0.3); }
 
-/* 終端機 (Quantum) */
+/* Quantum Terminal */
 .quantum-container {
     background: #000;
     border: 1px solid #333;
@@ -216,7 +206,7 @@ body {
 @keyframes pulseBtn { 0% { box-shadow: 0 0 10px var(--primary); } 50% { box-shadow: 0 0 25px var(--primary); } 100% { box-shadow: 0 0 10px var(--primary); } }
 .quantum-result { color: #0f0; min-height: 100px; display: none; }
 
-/* A/B 選項 (並排卡片) */
+/* A/B Options */
 .choice-container { display: flex; flex-direction: column; gap: 20px; }
 .choice-btn {
     background: rgba(255,255,255,0.03);
@@ -234,48 +224,71 @@ body {
 .choice-desc { font-size: 0.95rem; color: var(--text-sub); display: block; margin-bottom: 15px; }
 .choice-action { font-weight: bold; color: var(--accent); }
 
-/* Modal */
-.modal-overlay { background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
-.modal-content { background: #1e293b; color: #fff; border: 1px solid #334155; box-shadow: 0 20px 50px rgba(0,0,0,0.8); width: 90%; max-width: 450px; }
-.modal-btn { background: var(--primary); color: #fff; }
-
 /* =========================================
-   📱 響應式魔法 (Media Queries)
+   🟢 [修復] Modal 強制置中
    ========================================= */
+.modal-overlay { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; /* 這裡改為上下左右全貼齊 */
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.85); 
+    backdrop-filter: blur(8px); 
+    z-index: 9999; /* 層級最高 */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; /* 這裡負責垂直置中 */
+    padding: 20px;
+    animation: fadeIn 0.3s;
+}
 
-/* 當螢幕大於 768px (平板/電腦) */
+.modal-content { 
+    background: #1e293b; 
+    color: #fff; 
+    border: 1px solid #334155; 
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
+    width: 100%; 
+    max-width: 450px; 
+    border-radius: 20px;
+    padding: 30px;
+    position: relative; /* 確保內容不會跑掉 */
+    max-height: 90vh; /* 防止內容太長超出螢幕 */
+    overflow-y: auto; /* 內容太長時內部滾動 */
+    animation: slideUp 0.3s;
+}
+
+.modal-btn { 
+    background: var(--primary); 
+    color: #fff; 
+    width: 100%; 
+    padding: 12px; 
+    border: none; 
+    border-radius: 10px; 
+    font-weight: bold; 
+    margin-top: 20px; 
+    cursor: pointer; 
+}
+
+/* 響應式設定 */
 @media (min-width: 768px) {
-    /* 表單變雙欄 */
-    .checkbox-group, .scale-group { 
-        display: grid; 
-        grid-template-columns: 1fr 1fr; 
-        gap: 15px; 
-    }
-
-    /* 儀表板變 2x2 網格 */
-    .interpretation-section {
-        display: grid;
-        grid-template-columns: 1fr 1fr; /* 兩欄 */
-        gap: 25px;
-    }
+    .checkbox-group, .scale-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .interpretation-section { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
     .intro-text { grid-column: 1 / -1; margin-bottom: 20px; }
-
-    /* A/B 選項變並排 */
-    .choice-container {
-        flex-direction: row; 
-    }
-    .choice-btn { flex: 1; } /* 等寬 */
-    
+    .choice-container { flex-direction: row; }
+    .choice-btn { flex: 1; }
     .card { padding: 40px; }
 }
 
-/* 當螢幕小於 480px (手機) */
 @media (max-width: 480px) {
     .container { padding: 0 10px; }
-    .form-row { grid-template-columns: 1fr; gap: 10px; } /* 輸入框變單欄 */
+    .form-row { grid-template-columns: 1fr; gap: 10px; }
     .status-icon-large { width: 60px; height: 60px; font-size: 2.5rem; }
     .result-title { font-size: 1.5rem; }
 }
 
 .hidden { display: none !important; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
