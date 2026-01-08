@@ -1,14 +1,16 @@
 // =================================================================
-// 🔴 CONFIG
+// 🔴 CONFIG (請確認 Key 已填寫正確)
 // =================================================================
 const COZE_CONFIG = {
     api_url: 'https://api.coze.cn/open_api/v2/chat',
-    api_token: 'pat_hqnI0e3VpVIfZqJjbQ2E6OVKJdTCNHfN3MOhej6wPwtpSWEKT6VAIiuWsSxUJUk6', 
+    // 您的 PAT Token (來自您的截圖)
+    api_token: 'pat_hqnI0e3VpVIfZqJjbQ2E60VKJdTCNHfN3MOhej6wPwtpSWEKT6VAIiuWsSxUJUk6', 
+    // 您的 Bot ID (來自您的截圖)
     bot_id: '7592910227734200320' 
 };
 
 // =================================================================
-// 導航邏輯 (14 題)
+// 導航邏輯
 // =================================================================
 let currentStep = 0;
 const totalSteps = 14; 
@@ -57,6 +59,24 @@ function submitForm() {
     }, 1000);
 }
 
+// 🟢 新增功能：修改資料
+function editData() {
+    // 1. 關閉彈窗
+    closeModal();
+    // 2. 隱藏結果頁
+    document.getElementById('resultsContainer').classList.add('hidden');
+    // 3. 顯示表單容器
+    document.getElementById('formContainer').classList.remove('hidden');
+    document.getElementById('progressContainer').classList.remove('hidden');
+    // 4. 重置到第 0 步 (基本資料)
+    document.querySelectorAll('.step-card').forEach(el => el.classList.add('hidden'));
+    document.querySelector('.step-card[data-step="0"]').classList.remove('hidden');
+    currentStep = 0;
+    updateProgress();
+    // 5. 滾動到頂部
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 // =================================================================
 // ⚡️ Coze API 量子分析
 // =================================================================
@@ -64,7 +84,6 @@ async function runCozeAnalysis() {
     const btn = document.getElementById('analyzeBtn');
     const resultArea = document.getElementById('resultArea');
 
-    // 再次檢查 Key 是否為空 (雙重保險)
     if (!COZE_CONFIG.api_token || !COZE_CONFIG.bot_id) {
         resultArea.style.display = 'block';
         resultArea.innerHTML = "<span style='color:red;'>❌ 錯誤：API Key 未設定。</span>";
@@ -104,7 +123,6 @@ async function runCozeAnalysis() {
 
         const data = await response.json();
 
-        // 檢查 Coze 是否回傳錯誤代碼
         if (data.code && data.code !== 0) {
             throw new Error(`API Error ${data.code}: ${data.msg}`);
         }
@@ -115,14 +133,13 @@ async function runCozeAnalysis() {
                 btn.innerHTML = "✅ 分析完成";
                 typeWriterEffect(aiMessage.content, resultArea);
             } else {
-                // 有時候 Coze 會回傳 type: 'verbose' 或其他，這裡做容錯
-                const backupMsg = data.messages[0].content; 
+                const backupMsg = data.messages[0] ? data.messages[0].content : "分析完成，請參考詳細報告。"; 
                 btn.innerHTML = "✅ 分析完成";
                 typeWriterEffect(backupMsg, resultArea);
             }
         } else {
-            console.log("Coze Response:", data); // 在 Console 印出完整回應以便除錯
-            throw new Error("API 回傳格式不如預期，請檢查 Console。");
+            console.log("Coze Response:", data);
+            throw new Error("API 回傳格式異常，請檢查 Console。");
         }
 
     } catch (error) {
@@ -138,15 +155,14 @@ function typeWriterSimple(text, element) {
 }
 function typeWriterEffect(text, element, index = 0) {
     if (index < text.length) {
-        const char = text.charAt(index);
-        element.innerHTML += (char === '\n') ? '<br>' : char;
+        element.innerHTML += (text.charAt(index) === '\n') ? '<br>' : text.charAt(index);
         element.scrollTop = element.scrollHeight;
         setTimeout(() => typeWriterEffect(text, element, index + 1), 30);
     }
 }
 
 // =================================================================
-// 🟢 Modal 邏輯 (B選項不刷新)
+// 🟢 Modal 邏輯
 // =================================================================
 function handleChoice(choice) {
     const modal = document.getElementById('peakModal');
