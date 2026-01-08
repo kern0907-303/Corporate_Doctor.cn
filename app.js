@@ -4,7 +4,7 @@
 const COZE_CONFIG = {
     api_url: 'https://api.coze.cn/open_api/v2/chat',
     // 您的 PAT Token
-    api_token: 'pat_hqnI0e3VpVIfZqJjbQ2E60VKJdTCNHfN3MOhej6wPwtpSWEKT6VAIiuWsSxUJUk6', 
+    api_token: 'pat_Tv62rVIFCCSmohdrOe7nVY3qCrJ4tHCq6PzAf2XgCkQch2FZXuqIPr4EuNyVuiIP', 
     // 您的 Bot ID
     bot_id: '7592910227734200320' 
 };
