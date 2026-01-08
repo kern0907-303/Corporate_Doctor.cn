@@ -41,7 +41,7 @@
                         <label class="form-label">產業類別</label>
                         <select class="form-select" id="industry">
                             <option value="" disabled selected>請选擇</option>
-                            <option value="科技">科技/軟体</option><option value="製造">製造業</option><option value="零售">零售/電商</option><option value="其他">其他</option>
+                            <option value="科技">科技/軟体</option><option value="製造">製造業</option><option value="零售">零售/電商</option><option value="服務">服務業</option><option value="金融">金融/保險</option><option value="其他">其他</option>
                         </select>
                     </div>
                     <div>
@@ -60,11 +60,14 @@
 
             <div class="card step-card hidden" data-step="1">
                 <span class="step-badge">Q1 / 14</span><h2 class="card-title">目前對公司影響最大的困難是？</h2>
+                <p class="card-desc">最多选擇 2 项</p>
                 <div class="checkbox-group">
-                    <label class="checkbox-option"><input type="checkbox" name="q1"><div class="checkbox-label">客源不穩</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q1"><div class="checkbox-label">決策被拖慢</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q1"><div class="checkbox-label">老闆負擔過重</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q1"><div class="checkbox-label">現金流壓力</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q1" value="新客來源不穩"><div class="checkbox-label">客源不穩，營收时好时壞</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q1" value="成交率不如預期"><div class="checkbox-label">成交率低，轉換很辛苦</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q1" value="決策常被拖慢"><div class="checkbox-label">決策被拖慢，錯失市場先機</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q1" value="老闆负擔過重"><div class="checkbox-label">老闆负擔過重，無时間思考</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q1" value="團隊執行力不一致"><div class="checkbox-label">團隊執行力不一，品質難控管</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q1" value="现金流壓力"><div class="checkbox-label">现金流壓力，周轉令人焦慮</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -75,9 +78,12 @@
             <div class="card step-card hidden" data-step="2">
                 <span class="step-badge">Q2 / 14</span><h2 class="card-title">未來 3-6 個月最想改善的是？</h2>
                 <div class="checkbox-group">
-                    <label class="checkbox-option"><input type="checkbox" name="q2"><div class="checkbox-label">提升營收穩定度</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q2"><div class="checkbox-label">釋放老闆時間</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q2"><div class="checkbox-label">增加現金流安全感</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q2" value="營收穩定度"><div class="checkbox-label">提升營收穩定度</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q2" value="新客成長"><div class="checkbox-label">帶动新客成長</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q2" value="團隊穩定与效率"><div class="checkbox-label">提升團隊效率</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q2" value="老闆壓力下降"><div class="checkbox-label">釋放老闆时間</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q2" value="现金流安全感"><div class="checkbox-label">增加现金流安全感</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q2" value="管理制度成形"><div class="checkbox-label">建立标准化制度</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -86,11 +92,13 @@
             </div>
 
             <div class="card step-card hidden" data-step="3">
-                <span class="step-badge">Q3 / 14</span><h2 class="card-title">決策從提出到拍板，通常需要多久？</h2>
+                <span class="step-badge">Q3 / 14</span><h2 class="card-title">決策從「提出」到「拍板」，通常需要多久？</h2>
                 <div class="scale-group">
-                    <label class="scale-option"><input type="radio" name="q3"><div class="scale-label">當天決定</div></label>
-                    <label class="scale-option"><input type="radio" name="q3"><div class="scale-label">約一週</div></label>
-                    <label class="scale-option"><input type="radio" name="q3"><div class="scale-label">議而不決</div></label>
+                    <label class="scale-option"><input type="radio" name="q3" value="1"><div class="scale-label">当天決定</div></label>
+                    <label class="scale-option"><input type="radio" name="q3" value="2"><div class="scale-label">2-3 天</div></label>
+                    <label class="scale-option"><input type="radio" name="q3" value="3"><div class="scale-label">約一週</div></label>
+                    <label class="scale-option"><input type="radio" name="q3" value="4"><div class="scale-label">超過一週</div></label>
+                    <label class="scale-option"><input type="radio" name="q3" value="5"><div class="scale-label">議而不決</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -99,11 +107,13 @@
             </div>
 
             <div class="card step-card hidden" data-step="4">
-                <span class="step-badge">Q4 / 14</span><h2 class="card-title">落地執行通常需要幾次「來回修改」？</h2>
+                <span class="step-badge">Q4 / 14</span><h2 class="card-title">拍板的事，落地執行通常需要幾次「來回修改」？</h2>
                 <div class="scale-group">
-                    <label class="scale-option"><input type="radio" name="q4"><div class="scale-label">一次到位</div></label>
-                    <label class="scale-option"><input type="radio" name="q4"><div class="scale-label">來回多次</div></label>
-                    <label class="scale-option"><input type="radio" name="q4"><div class="scale-label">嚴重走樣</div></label>
+                    <label class="scale-option"><input type="radio" name="q4" value="1"><div class="scale-label">一次到位</div></label>
+                    <label class="scale-option"><input type="radio" name="q4" value="2"><div class="scale-label">偶爾確認</div></label>
+                    <label class="scale-option"><input type="radio" name="q4" value="3"><div class="scale-label">補說 1-2 次</div></label>
+                    <label class="scale-option"><input type="radio" name="q4" value="4"><div class="scale-label">來回多次</div></label>
+                    <label class="scale-option"><input type="radio" name="q4" value="5"><div class="scale-label">嚴重走樣</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -114,9 +124,11 @@
             <div class="card step-card hidden" data-step="5">
                 <span class="step-badge">Q5 / 14</span><h2 class="card-title">是否有固定、不易被取消的管理節奏？</h2>
                 <div class="scale-group">
-                    <label class="scale-option"><input type="radio" name="q5"><div class="scale-label">固定且落實</div></label>
-                    <label class="scale-option"><input type="radio" name="q5"><div class="scale-label">偶爾才做</div></label>
-                    <label class="scale-option"><input type="radio" name="q5"><div class="scale-label">幾乎沒有</div></label>
+                    <label class="scale-option"><input type="radio" name="q5" value="1"><div class="scale-label">固定且落實</div></label>
+                    <label class="scale-option"><input type="radio" name="q5" value="2"><div class="scale-label">大多固定</div></label>
+                    <label class="scale-option"><input type="radio" name="q5" value="3"><div class="scale-label">品質不穩</div></label>
+                    <label class="scale-option"><input type="radio" name="q5" value="4"><div class="scale-label">偶爾才做</div></label>
+                    <label class="scale-option"><input type="radio" name="q5" value="5"><div class="scale-label">幾乎沒有</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -125,11 +137,13 @@
             </div>
 
             <div class="card step-card hidden" data-step="6">
-                <span class="step-badge">Q6 / 14</span><h2 class="card-title">有多少關事情「非你不可」？</h2>
+                <span class="step-badge">Q6 / 14</span><h2 class="card-title">有多少关鍵事情「非你不可」？</h2>
                 <div class="scale-group">
-                    <label class="scale-option"><input type="radio" name="q6"><div class="scale-label">多數可授權</div></label>
-                    <label class="scale-option"><input type="radio" name="q6"><div class="scale-label">約佔一半</div></label>
-                    <label class="scale-option"><input type="radio" name="q6"><div class="scale-label">全部卡在我</div></label>
+                    <label class="scale-option"><input type="radio" name="q6" value="1"><div class="scale-label">多數可授權</div></label>
+                    <label class="scale-option"><input type="radio" name="q6" value="2"><div class="scale-label">把关重要事</div></label>
+                    <label class="scale-option"><input type="radio" name="q6" value="3"><div class="scale-label">約佔一半</div></label>
+                    <label class="scale-option"><input type="radio" name="q6" value="4"><div class="scale-label">大多數要我</div></label>
+                    <label class="scale-option"><input type="radio" name="q6" value="5"><div class="scale-label">全部卡在我</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -140,9 +154,12 @@
             <div class="card step-card hidden" data-step="7">
                 <span class="step-badge">Q7 / 14</span><h2 class="card-title">哪些問題在公司「一直都存在」？</h2>
                 <div class="checkbox-group">
-                    <label class="checkbox-option"><input type="checkbox" name="q7"><div class="checkbox-label">老闆是最大瓶頸</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q7"><div class="checkbox-label">執行力長期不穩</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q7"><div class="checkbox-label">無穩定獲客</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="老闆是最大瓶颈"><div class="checkbox-label">老闆是最大瓶颈</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="團隊執行力長期不穩"><div class="checkbox-label">團隊執行力長期不穩</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="獲客沒有穩定方法"><div class="checkbox-label">獲客沒有穩定方法</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="管理制度建不起來"><div class="checkbox-label">管理制度建不起來</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="现金流一直偏緊"><div class="checkbox-label">现金流一直偏緊</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="以上都沒有"><div class="checkbox-label">以上都沒有</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -151,11 +168,14 @@
             </div>
 
             <div class="card step-card hidden" data-step="8">
-                <span class="step-badge">Q8 / 14</span><h2 class="card-title">近期「明顯變差」的是？</h2>
+                <span class="step-badge">Q8 / 14</span><h2 class="card-title">近期「明顯变差」的是？</h2>
                 <div class="checkbox-group">
-                    <label class="checkbox-option"><input type="checkbox" name="q8"><div class="checkbox-label">業績明顯下滑</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q8"><div class="checkbox-label">重要客戶流失</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q8"><div class="checkbox-label">現金流吃緊</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q8" value="業績明顯下滑"><div class="checkbox-label">業績明顯下滑</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q8" value="重要客户流失"><div class="checkbox-label">重要客户流失</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q8" value="关鍵人員異动"><div class="checkbox-label">关鍵人員異动</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q8" value="现金流突然吃緊"><div class="checkbox-label">现金流突然吃緊</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q8" value="專案嚴重卡关"><div class="checkbox-label">專案嚴重卡关</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q8" value="最近还算穩定"><div class="checkbox-label">最近还算穩定</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -166,9 +186,10 @@
             <div class="card step-card hidden" data-step="9">
                 <span class="step-badge">Q9 / 14</span><h2 class="card-title">每天能專注改善多久？</h2>
                 <div class="scale-group">
-                    <label class="scale-option"><input type="radio" name="q9"><div class="scale-label">30 分鐘內</div></label>
-                    <label class="scale-option"><input type="radio" name="q9"><div class="scale-label">1 小時</div></label>
-                    <label class="scale-option"><input type="radio" name="q9"><div class="scale-label">1 小時以上</div></label>
+                    <label class="scale-option"><input type="radio" name="q9" value="1"><div class="scale-label">15 分鐘以內</div></label>
+                    <label class="scale-option"><input type="radio" name="q9" value="2"><div class="scale-label">30 分鐘</div></label>
+                    <label class="scale-option"><input type="radio" name="q9" value="3"><div class="scale-label">1 小时</div></label>
+                    <label class="scale-option"><input type="radio" name="q9" value="4"><div class="scale-label">1 小时以上</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -179,9 +200,11 @@
             <div class="card step-card hidden" data-step="10">
                 <span class="step-badge">Q10 / 14</span><h2 class="card-title">有哪些人可協助？</h2>
                 <div class="checkbox-group">
-                    <label class="checkbox-option"><input type="checkbox" name="q10"><div class="checkbox-label">得力主管</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q10"><div class="checkbox-label">合夥人</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q10"><div class="checkbox-label">只能靠自己</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q10" value="得力主管"><div class="checkbox-label">得力主管</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q10" value="核心員工"><div class="checkbox-label">核心員工</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q10" value="外部顾問"><div class="checkbox-label">外部顾問</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q10" value="合夥人"><div class="checkbox-label">合夥人</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q10" value="只能靠自己"><div class="checkbox-label">只能靠自己</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -192,9 +215,11 @@
             <div class="card step-card hidden" data-step="11">
                 <span class="step-badge">Q11 / 14</span><h2 class="card-title">你有把握的能力？</h2>
                 <div class="checkbox-group">
-                    <label class="checkbox-option"><input type="checkbox" name="q11"><div class="checkbox-label">銷售談判</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q11"><div class="checkbox-label">制度流程</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q11"><div class="checkbox-label">團隊溝通</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q11" value="銷售談判"><div class="checkbox-label">銷售談判</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q11" value="制度流程"><div class="checkbox-label">制度流程</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q11" value="團隊溝通"><div class="checkbox-label">團隊溝通</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q11" value="財務管理"><div class="checkbox-label">財務管理</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q11" value="都不太有把握"><div class="checkbox-label">都不太有把握</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -205,9 +230,12 @@
             <div class="card step-card hidden" data-step="12">
                 <span class="step-badge">Q12 / 14</span><h2 class="card-title">7 天內想達成的成果？</h2>
                 <div class="checkbox-group">
-                    <label class="checkbox-option"><input type="checkbox" name="q12"><div class="checkbox-label">處理緊急事項</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q12"><div class="checkbox-label">追回帳款</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q12"><div class="checkbox-label">完成決策</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q12" value="處理緊急事项"><div class="checkbox-label">處理緊急事项</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q12" value="追回应收帳款"><div class="checkbox-label">追回应收帳款</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q12" value="縮減支出"><div class="checkbox-label">縮減支出</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q12" value="完成延遲決策"><div class="checkbox-label">完成延遲決策</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q12" value="減少返工"><div class="checkbox-label">減少返工</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q12" value="接觸新客户"><div class="checkbox-label">接觸新客户</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -218,9 +246,11 @@
             <div class="card step-card hidden" data-step="13">
                 <span class="step-badge">Q13 / 14</span><h2 class="card-title">最大的阻礙？</h2>
                 <div class="scale-group">
-                    <label class="scale-option"><input type="radio" name="q13"><div class="scale-label">太忙沒空</div></label>
-                    <label class="scale-option"><input type="radio" name="q13"><div class="scale-label">方法存疑</div></label>
-                    <label class="scale-option"><input type="radio" name="q13"><div class="scale-label">團隊不配合</div></label>
+                    <label class="scale-option"><input type="radio" name="q13" value="1"><div class="scale-label">太忙沒空</div></label>
+                    <label class="scale-option"><input type="radio" name="q13" value="2"><div class="scale-label">方法存疑</div></label>
+                    <label class="scale-option"><input type="radio" name="q13" value="3"><div class="scale-label">團隊不配合</div></label>
+                    <label class="scale-option"><input type="radio" name="q13" value="4"><div class="scale-label">容易分心</div></label>
+                    <label class="scale-option"><input type="radio" name="q13" value="5"><div class="scale-label">不知問誰</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -231,8 +261,10 @@
             <div class="card step-card hidden" data-step="14">
                 <span class="step-badge">Q14 / 14</span><h2 class="card-title">您的信心程度？</h2>
                 <div class="scale-group">
-                    <label class="scale-option"><input type="radio" name="q14"><div class="scale-label">願意試試</div></label>
-                    <label class="scale-option"><input type="radio" name="q14"><div class="scale-label">很有信心</div></label>
+                    <label class="scale-option"><input type="radio" name="q14" value="0"><div class="scale-label">不太相信</div></label>
+                    <label class="scale-option"><input type="radio" name="q14" value="1"><div class="scale-label">有点擔心</div></label>
+                    <label class="scale-option"><input type="radio" name="q14" value="2"><div class="scale-label">願意試試</div></label>
+                    <label class="scale-option"><input type="radio" name="q14" value="3"><div class="scale-label">很有信心</div></label>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="prevStep()">上一步</button>
@@ -251,11 +283,11 @@
         <div class="results-container hidden" id="resultsContainer">
             <div class="result-header">
                 <div class="result-icon-main" style="font-size:3rem;">🔮</div>
-                <h1 class="result-title">检测結果解讀</h1>
+                <div><h1 class="result-title">检测結果解讀</h1></div>
             </div>
 
             <div class="status-card" id="statusCard">
-                <div class="status-icon-large" style="font-size:2rem; margin-bottom:10px;">⚡</div>
+                <div class="status-icon-large" id="statusIcon" style="font-size:2rem; margin-bottom:10px;">⚡</div>
                 <div class="status-info">
                     <h2 id="statusTitle" style="margin:0 0 10px 0;">分析完成</h2>
                     <p id="statusDesc" style="margin:0;">您的企業能量瓶頸代碼已生成。</p>
