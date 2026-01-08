@@ -46,50 +46,41 @@ function updateProgress() {
 // 2. 核心算法：計算瓶頸 (Scoring Engine)
 // =================================================================
 function calculateDiagnosis() {
-    // 取得所有表單數據
     const getVals = (name) => {
         const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
         return Array.from(checked).map(el => el.value);
     };
     
-    // 初始化分數
     let scores = { B1: 0, B2: 0, B3: 0, B4: 0 };
 
-    // --- Q1: 目前最大困難 (權重高) ---
     const q1 = getVals('q1');
     if (q1.includes('新客來源不穩') || q1.includes('成交率不如預期')) scores.B1 += 3;
     if (q1.includes('決策常被拖慢') || q1.includes('老闆負擔過重')) scores.B2 += 3;
     if (q1.includes('團隊執行力不一致') || q1.includes('人員留不住')) scores.B3 += 3;
-    if (q1.includes('现金流壓力')) scores.B4 += 4; // 現金流權重加重
+    if (q1.includes('现金流壓力')) scores.B4 += 4; 
 
-    // --- Q2: 未來改善 ---
     const q2 = getVals('q2');
     if (q2.includes('新客成長')) scores.B1 += 2;
     if (q2.includes('老闆壓力下降')) scores.B2 += 2;
     if (q2.includes('團隊穩定与效率')) scores.B3 += 2;
     if (q2.includes('现金流安全感')) scores.B4 += 2;
 
-    // --- Q7: 長期存在的問題 ---
     const q7 = getVals('q7');
     if (q7.includes('獲客沒有穩定方法')) scores.B1 += 2;
     if (q7.includes('老闆是最大瓶颈')) scores.B2 += 3;
     if (q7.includes('團隊執行力長期不穩')) scores.B3 += 2;
     if (q7.includes('现金流一直偏緊')) scores.B4 += 3;
 
-    // --- Q8: 近期變差 ---
     const q8 = getVals('q8');
     if (q8.includes('業績明顯下滑')) scores.B1 += 2;
-    if (q8.includes('现金流突然吃緊')) scores.B4 += 4; // 急症
+    if (q8.includes('现金流突然吃緊')) scores.B4 += 4;
 
-    // 找出最高分
-    let maxType = 'B2'; // 預設
+    let maxType = 'B2'; 
     let maxScore = -1;
     
-    // 比較邏輯：B4(現金流)若大於等於 5 分，優先顯示，因為最痛
     if (scores.B4 >= 5) {
         maxType = 'B4';
     } else {
-        // 否則找最大值
         for (const [type, score] of Object.entries(scores)) {
             if (score > maxScore) {
                 maxScore = score;
@@ -97,44 +88,46 @@ function calculateDiagnosis() {
             }
         }
     }
-
     return maxType;
 }
 
-// 定義結果文案庫
+// 🟢 結果文案庫 (加入 field 欄位)
 const RESULTS_CONTENT = {
     'B1': {
         title: '診斷類型：B1 市場閉塞型',
+        field: '市場場域', // 🟢 新增
         desc: '特徵：好產品卻沒人看見，客源不穩定，像是在對著空曠的房間演講。',
         analysis: '您的能量卡在「對外輸出的管道」。不是產品不好，而是連結市場的頻率斷裂，導致價值無法變現。'
     },
     'B2': {
         title: '診斷類型：B2 管理效能型',
+        field: '管理場域', // 🟢 新增
         desc: '特徵：決策速度快但落實難，老闆容易成為唯一驅動力，身心俱疲。',
         analysis: '您的能量呈現「單點過熱」。老闆像超載的發電機，而團隊處於低頻待機，能量無法有效傳導與分配。'
     },
     'B3': {
         title: '診斷類型：B3 執行內耗型',
+        field: '執行場域', // 🟢 新增
         desc: '特徵：團隊頻率不對頻，簡單的事情需要反覆溝通，內耗大於產出。',
         analysis: '您的能量場存在「破口與亂流」。指令下達後會產生雜訊，導致執行動作變形，團隊共振效應極低。'
     },
     'B4': {
         title: '診斷類型：B4 財富淤積型',
+        field: '財富場域', // 🟢 新增
         desc: '特徵：賺得到但留不住，或是現金流長期緊繃，如同血管硬化。',
         analysis: '這是最緊急的「能量淤塞」。財富能量流動受阻，如果不疏通底層恐懼與限制性信念，注入再多資源都會流失。'
     }
 };
 
 // =================================================================
-// 3. 提交表單 (現在會動態運算了！)
+// 3. 提交表單
 // =================================================================
-let finalResultType = 'B2'; // 全域變數儲存結果
+let finalResultType = 'B2'; 
 
 function submitForm() {
     document.querySelector(`.step-card[data-step="${totalSteps}"]`).classList.add('hidden');
     document.getElementById('loadingCard').classList.remove('hidden');
 
-    // 🟢 執行運算
     finalResultType = calculateDiagnosis();
     const resultData = RESULTS_CONTENT[finalResultType];
 
@@ -146,18 +139,21 @@ function submitForm() {
         document.getElementById('resultsContainer').classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        // 🟢 動態更新畫面文字
         document.getElementById('statusTitle').innerText = resultData.title;
         document.getElementById('statusDesc').innerText = resultData.desc;
         
-        // 也可以選擇性更新第三段分析的文字，讓它更準確
-        const analysisBlock = document.querySelectorAll('.insight-block p')[2]; // 找到第三段
+        // 🟢 動態更新「量子鎖定文字」
+        const lockText = document.getElementById('quantumLockText');
+        if (lockText) {
+            lockText.innerText = `系統已鎖定 ${resultData.field}，點擊按鈕連結全球資料庫...`;
+        }
+
+        const analysisBlock = document.querySelectorAll('.insight-block p')[2]; 
         if(analysisBlock) analysisBlock.innerText = resultData.analysis;
 
     }, 1000);
 }
 
-// 🟢 新增功能：修改資料
 function editData() {
     closeModal();
     document.getElementById('resultsContainer').classList.add('hidden');
@@ -171,7 +167,7 @@ function editData() {
 }
 
 // =================================================================
-// ⚡️ Coze API 量子分析 (會帶入真實診斷結果)
+// ⚡️ Coze API 量子分析
 // =================================================================
 async function runCozeAnalysis() {
     const btn = document.getElementById('analyzeBtn');
@@ -188,12 +184,11 @@ async function runCozeAnalysis() {
     resultArea.style.display = 'block';
     resultArea.innerHTML = ""; 
     
-    // 🟢 根據計算結果，顯示不同的 loading 文字
     const typeName = RESULTS_CONTENT[finalResultType].title.split('：')[1];
     await typeWriterSimple(`正在連結初八企業顧問大腦...\n鎖定診斷類型：${typeName}...\n校準 ${finalResultType} 場域能量參數...\n--------------------------------\n`, resultArea);
 
     const diagnosisData = {
-        "bottleneck": finalResultType, // 🟢 傳送真實計算出的類型
+        "bottleneck": finalResultType,
         "context": RESULTS_CONTENT[finalResultType].desc,
         "user_name": document.getElementById('userName').value
     };
@@ -255,9 +250,6 @@ function typeWriterEffect(text, element, index = 0) {
     }
 }
 
-// =================================================================
-// 🟢 Modal 邏輯
-// =================================================================
 function handleChoice(choice) {
     const modal = document.getElementById('peakModal');
     const body = document.getElementById('modalBodyContent');
