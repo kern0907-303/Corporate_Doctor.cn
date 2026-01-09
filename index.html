@@ -30,11 +30,13 @@
                 <div class="card-header"><span class="step-badge">Start</span><h2 class="card-title">建立企業健康檔案</h2></div>
                 <div class="form-row">
                     <div><label class="form-label">您的稱呼</label><input type="text" class="form-input" id="userName" placeholder="王小明"></div>
-                    <div><label class="form-label">联絡電話</label><input type="tel" class="form-input" id="userPhone" placeholder="0912345678"></div>
+                    <div><label class="form-label">公司名稱</label><input type="text" class="form-input" id="companyName" placeholder="Initial8 CO."></div>
                 </div>
                 <div class="form-row">
-                    <div><label class="form-label">公司名稱</label><input type="text" class="form-input" id="companyName" placeholder="Initial8 CO."></div>
-                    <div><label class="form-label">Email</label><input type="email" class="form-input" id="userEmail" placeholder="name@company.com"></div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="form-label">聯繫方式 (微信 / 手機)</label>
+                        <input type="text" class="form-input" id="userContact" placeholder="請輸入微信號或大陸手機號 (必填)">
+                    </div>
                 </div>
                 <div class="form-row">
                     <div>
@@ -155,7 +157,7 @@
             <div class="card step-card hidden" data-step="7">
                 <span class="step-badge">Q7 / 14</span><h2 class="card-title">哪些問題在公司「一直都存在」？</h2>
                 <div class="checkbox-group">
-                    <label class="checkbox-option"><input type="checkbox" name="q7" value="老闆是最大瓶颈"><div class="checkbox-label">老闆是最大瓶颈</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q7" value="老闆是最大瓶颈"><div class="checkbox-label">老闆是瓶颈</div></label>
                     <label class="checkbox-option"><input type="checkbox" name="q7" value="團隊執行力長期不穩"><div class="checkbox-label">團隊執行力長期不穩</div></label>
                     <label class="checkbox-option"><input type="checkbox" name="q7" value="獲客沒有穩定方法"><div class="checkbox-label">獲客沒有穩定方法</div></label>
                     <label class="checkbox-option"><input type="checkbox" name="q7" value="管理制度建不起來"><div class="checkbox-label">管理制度建不起來</div></label>
@@ -174,7 +176,7 @@
                     <label class="checkbox-option"><input type="checkbox" name="q8" value="業績明顯下滑"><div class="checkbox-label">業績明顯下滑</div></label>
                     <label class="checkbox-option"><input type="checkbox" name="q8" value="重要客户流失"><div class="checkbox-label">重要客户流失</div></label>
                     <label class="checkbox-option"><input type="checkbox" name="q8" value="关鍵人員異动"><div class="checkbox-label">关鍵人員異动</div></label>
-                    <label class="checkbox-option"><input type="checkbox" name="q8" value="现金流突然吃緊"><div class="checkbox-label">现金流突然吃緊</div></label>
+                    <label class="checkbox-option"><input type="checkbox" name="q8" value="现金流突然吃緊"><div class="checkbox-label">现金流吃緊</div></label>
                     <label class="checkbox-option"><input type="checkbox" name="q8" value="專案嚴重卡关"><div class="checkbox-label">專案嚴重卡关</div></label>
                     <label class="checkbox-option"><input type="checkbox" name="q8" value="最近还算穩定"><div class="checkbox-label">最近还算穩定</div></label>
                 </div>
