@@ -3,7 +3,7 @@
 // =================================================================
 const COZE_CONFIG = {
 // 👇 請將剛剛 Google Apps Script 部署的網址貼在這裡
-    google_script_url: 'https://script.google.com/macros/s/AKfycbw1fOqvitcjBRBb78fsLHP172scH1JLpVxX3VY6QhjMTEjwVwPF4YhlYeqlB4L8HUa_zA/exec',
+    api_url: 'https://api.coze.cn/open_api/v2/chat',
 
     api_url: 'https://api.coze.cn/open_api/v2/chat',
     // 您的 PAT Token
@@ -20,8 +20,11 @@ const totalSteps = 14;
 
 function nextStep() {
     if (currentStep === 0) {
+        // 🟢 驗證改為檢查 userContact
         const name = document.getElementById('userName').value;
+        const contact = document.getElementById('userContact').value;
         if (!name) { alert("請填寫您的稱呼"); return; }
+        if (!contact) { alert("請填寫微信號或手機號，以便接收報告"); return; }
     }
     document.querySelector(`.step-card[data-step="${currentStep}"]`).classList.add('hidden');
     currentStep++;
@@ -257,66 +260,109 @@ function typeWriterEffect(text, element, index = 0) {
 }
 
 // =================================================================
-// 🟢 Modal 邏輯 (文字顏色全數修正為高對比白色)
+// 🚀 新增：發送資料到 Coze Bot (作為資料庫)
+// =================================================================
+async function sendDataToCoze(userChoice) {
+    const name = document.getElementById('userName').value;
+    const contact = document.getElementById('userContact').value;
+    const company = document.getElementById('companyName').value;
+    
+    // 組合訊息 (給 Coze 機器人看的日誌)
+    const logMessage = `
+    【新客戶名單】
+    --------------------
+    姓名：${name}
+    聯繫：${contact}
+    公司：${company}
+    診斷：${finalResultType}
+    意向：${userChoice === 'A' ? '🔥 高 (選擇測試)' : '❄️ 低 (僅看報告)'}
+    時間：${new Date().toLocaleString()}
+    --------------------
+    `;
+
+    try {
+        await fetch(COZE_CONFIG.api_url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${COZE_CONFIG.api_token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "conversation_id": "lead_" + Date.now(),
+                "bot_id": COZE_CONFIG.bot_id,
+                "user": "lead_collector",
+                "query": logMessage, // 把客戶資料當作對話發送
+                "stream": false
+            })
+        });
+        console.log("Lead data sent to Coze successfully.");
+    } catch (error) {
+        console.error("Failed to send lead data:", error);
+    }
+}
+
+// =================================================================
+// 🟢 Modal 邏輯 (QR Code 版 + 自動發送資料)
 // =================================================================
 function handleChoice(choice) {
     const modal = document.getElementById('peakModal');
     const body = document.getElementById('modalBodyContent');
     const actionContainer = document.getElementById('modalActionContainer');
     
-    const name = document.getElementById('userName').value || "王總";
-    const email = document.getElementById('userEmail').value || "(未填寫 Email)";
+    // 🟢 觸發背景發送 (這是您的資料庫)
+    sendDataToCoze(choice);
     
     actionContainer.innerHTML = ''; 
 
+    // 假圖片 (請替換成您真實的 QR Code)
+    const qrCodeWeCom = "https://placehold.co/200x200/2563eb/ffffff?text=WeCom+QR";
+    const qrCodeOA = "https://placehold.co/200x200/475569/ffffff?text=Official+Account";
+
     if (choice === 'A') {
-        // 🟢 選項 A：賦能與確認 (修正文字顏色)
+        // 🟢 選項 A：企業微信 (高意向)
         body.innerHTML = `
-            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">${name} 您好，</p>
-            <p style="color:#e2e8f0; font-size:1rem;">您即將啟動 <strong>72小時免費頻率共振測試</strong>。</p>
+            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">已啟動高頻通道</p>
+            <p style="color:#e2e8f0; font-size:1rem;">為了確保頻率校準的精確性，<br>請直接添加首席顧問的企業微信。</p>
             
-            <div style="background:rgba(59, 130, 246, 0.2); border-left:4px solid #3b82f6; padding:15px; margin:20px 0; font-size:1rem; line-height:1.6; color:#ffffff; font-style:italic;">
-                <span style="color:#60a5fa; font-weight:bold;">🚀 來自場域的訊息：</span><br>
-                「決心，是宇宙最強的頻率。<br>當您選擇『看見』的那一刻，校準就已經開始了。」
+            <div style="margin:20px 0; text-align:center;">
+                <img src="${qrCodeWeCom}" style="border-radius:10px; border:3px solid #3b82f6; width:180px; height:180px;">
+                <p style="color:#60a5fa; font-size:0.9rem; margin-top:10px;">掃碼後請發送代碼：<strong>「啟動測試」</strong></p>
             </div>
 
-            <hr style="border:0; border-top:1px dashed #64748b; margin:20px 0;">
-            <p style="font-size:0.95rem; color:#cbd5e1;">請確認您的資料：<br>Email: <span style="color:#ffffff; font-weight:bold;">${email}</span></p>
-            <p style="color:#94a3b8; font-size:0.85rem; margin-top:10px;">點擊按鈕將開啟 Line，本頁面會保留。</p>
+            <div style="background:rgba(59, 130, 246, 0.2); border-left:4px solid #3b82f6; padding:15px; margin:20px 0; font-size:0.95rem; color:#ffffff; font-style:italic;">
+                <span style="color:#60a5fa; font-weight:bold;">🚀 顧問留言：</span><br>
+                「決心是宇宙最強的頻率。當您掃碼的那一刻，底層校準就已經開始了。」
+            </div>
         `;
         const btn = document.createElement('button');
         btn.type = "button";
         btn.className = 'modal-btn';
-        btn.innerText = '✅ 資料無誤，前往啟動測試';
-        btn.onclick = function() {
-            window.open("https://line.me/R/ti/p/@initial8", "_blank"); 
-            closeModal();
-        };
+        btn.innerText = '完成，我已添加';
+        btn.onclick = closeModal;
         actionContainer.appendChild(btn);
 
     } else {
-        // 🟢 選項 B：挽留與洞察 (修正文字顏色)
+        // 🟢 選項 B：公眾號 (低意向)
         body.innerHTML = `
-            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">${name} 您好，</p>
-            <p style="color:#e2e8f0; font-size:1rem;">您選擇僅獲取報告。我們已記錄需求。</p>
+            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">報告已生成 (加密版)</p>
+            <p style="color:#e2e8f0; font-size:1rem;">為了保護您的企業隱私，報告已上傳至雲端保險箱。</p>
             
-            <div style="background:rgba(245, 158, 11, 0.15); border-left:4px solid #f59e0b; padding:15px; margin:20px 0; font-size:1rem; line-height:1.6; color:#ffffff; font-style:italic;">
-                <span style="color:#fbbf24; font-weight:bold;">💡 顧問的洞察：</span><br>
-                「看見問題只是第一步，穿越它需要能量。<br>願這份報告，成為您打破慣性的第一道光。」
+            <div style="margin:20px 0; text-align:center;">
+                <img src="${qrCodeOA}" style="border-radius:10px; border:3px solid #94a3b8; width:180px; height:180px;">
+                <p style="color:#cbd5e1; font-size:0.9rem; margin-top:10px;">關注公眾號，回覆：<strong>「B2報告」</strong><br>即可獲取完整分析。</p>
             </div>
 
-            <hr style="border:0; border-top:1px dashed #64748b; margin:20px 0;">
-            
-            <p style="margin-bottom:5px; color:#cbd5e1;">系統將把診斷報告發送至：</p>
-            <p style="color:#ffffff; font-weight:bold; font-size:1.1rem; margin:0;">${email}</p>
-            <p style="font-size:0.85rem; color:#94a3b8; margin-top:5px;">(若信箱有誤，請點擊左下角修改)</p>
+            <div style="background:rgba(245, 158, 11, 0.15); border-left:4px solid #f59e0b; padding:15px; margin:20px 0; font-size:0.95rem; color:#ffffff; font-style:italic;">
+                <span style="color:#fbbf24; font-weight:bold;">💡 顧問的洞察：</span><br>
+                「看見問題只是第一步。願這份報告，成為您打破慣性的第一道光。」
+            </div>
         `;
         
         const btn = document.createElement('button');
         btn.type = "button";
         btn.className = 'modal-btn';
-        btn.style.background = '#475569'; // 灰色按鈕
-        btn.innerText = '👌 我知道了';
+        btn.style.background = '#475569'; 
+        btn.innerText = '關閉視窗';
         btn.onclick = closeModal;
         actionContainer.appendChild(btn);
     }
