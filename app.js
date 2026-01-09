@@ -2,6 +2,9 @@
 // 🔴 CONFIG (請確認 Key 已填寫正確)
 // =================================================================
 const COZE_CONFIG = {
+// 👇 請將剛剛 Google Apps Script 部署的網址貼在這裡
+    google_script_url: 'https://script.google.com/macros/s/AKfycbw1fOqvitcjBRBb78fsLHP172scH1JLpVxX3VY6QhjMTEjwVwPF4YhlYeqlB4L8HUa_zA/exec',
+
     api_url: 'https://api.coze.cn/open_api/v2/chat',
     // 您的 PAT Token
     api_token: 'pat_Tv62rVIFCCSmohdrOe7nVY3qCrJ4tHCq6PzAf2XgCkQch2FZXuqIPr4EuNyVuiIP', 
