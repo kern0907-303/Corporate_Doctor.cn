@@ -225,39 +225,44 @@ body {
 .choice-action { font-weight: bold; color: var(--accent); }
 
 /* =========================================
-   🟢 [修復] Modal 強制置中
+   🟢 [Modal 置中 + 深色修正]
    ========================================= */
 .modal-overlay { 
     position: fixed; 
-    top: 0; 
-    left: 0; 
-    right: 0; 
-    bottom: 0; /* 這裡改為上下左右全貼齊 */
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0; right: 0; bottom: 0; 
+    width: 100vw; height: 100vh;
     background: rgba(0,0,0,0.85); 
     backdrop-filter: blur(8px); 
-    z-index: 9999; /* 層級最高 */
+    z-index: 9999; 
     display: flex; 
     justify-content: center; 
-    align-items: center; /* 這裡負責垂直置中 */
+    align-items: center; 
     padding: 20px;
     animation: fadeIn 0.3s;
 }
 
 .modal-content { 
-    background: #1e293b; 
-    color: #fff; 
+    background: #1e293b; /* 深藍底 */
+    color: #ffffff;      /* 強制白字 */
     border: 1px solid #334155; 
-    box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9); 
     width: 100%; 
     max-width: 450px; 
     border-radius: 20px;
     padding: 30px;
-    position: relative; /* 確保內容不會跑掉 */
-    max-height: 90vh; /* 防止內容太長超出螢幕 */
-    overflow-y: auto; /* 內容太長時內部滾動 */
+    position: relative; 
+    max-height: 90vh; 
+    overflow-y: auto; 
     animation: slideUp 0.3s;
+}
+
+/* 確保 modal body 背景深一點，讓文字更明顯 */
+.modal-body { 
+    background: rgba(0,0,0,0.4) !important; 
+    color: #ffffff !important; 
+    border: 1px solid #334155; 
+    padding: 20px !important; 
+    border-radius: 12px;
 }
 
 .modal-btn { 
