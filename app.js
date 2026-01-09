@@ -53,24 +53,28 @@ function calculateDiagnosis() {
     
     let scores = { B1: 0, B2: 0, B3: 0, B4: 0 };
 
+    // Q1 權重
     const q1 = getVals('q1');
     if (q1.includes('新客來源不穩') || q1.includes('成交率不如預期')) scores.B1 += 3;
     if (q1.includes('決策常被拖慢') || q1.includes('老闆負擔過重')) scores.B2 += 3;
-    if (q1.includes('團隊執行力不一致') || q1.includes('人員留不住')) scores.B3 += 3;
+    if (q1.includes('團隊執行力不一致') || q1.includes('人员留不住')) scores.B3 += 3;
     if (q1.includes('现金流壓力')) scores.B4 += 4; 
 
+    // Q2 權重
     const q2 = getVals('q2');
     if (q2.includes('新客成長')) scores.B1 += 2;
     if (q2.includes('老闆壓力下降')) scores.B2 += 2;
     if (q2.includes('團隊穩定与效率')) scores.B3 += 2;
     if (q2.includes('现金流安全感')) scores.B4 += 2;
 
+    // Q7 權重
     const q7 = getVals('q7');
     if (q7.includes('獲客沒有穩定方法')) scores.B1 += 2;
     if (q7.includes('老闆是最大瓶颈')) scores.B2 += 3;
     if (q7.includes('團隊執行力長期不穩')) scores.B3 += 2;
     if (q7.includes('现金流一直偏緊')) scores.B4 += 3;
 
+    // Q8 權重
     const q8 = getVals('q8');
     if (q8.includes('業績明顯下滑')) scores.B1 += 2;
     if (q8.includes('现金流突然吃緊')) scores.B4 += 4;
@@ -91,29 +95,29 @@ function calculateDiagnosis() {
     return maxType;
 }
 
-// 🟢 結果文案庫 (加入 field 欄位)
+// 結果文案庫
 const RESULTS_CONTENT = {
     'B1': {
         title: '診斷類型：B1 市場閉塞型',
-        field: '市場場域', // 🟢 新增
+        field: '市場場域',
         desc: '特徵：好產品卻沒人看見，客源不穩定，像是在對著空曠的房間演講。',
         analysis: '您的能量卡在「對外輸出的管道」。不是產品不好，而是連結市場的頻率斷裂，導致價值無法變現。'
     },
     'B2': {
         title: '診斷類型：B2 管理效能型',
-        field: '管理場域', // 🟢 新增
+        field: '管理場域',
         desc: '特徵：決策速度快但落實難，老闆容易成為唯一驅動力，身心俱疲。',
         analysis: '您的能量呈現「單點過熱」。老闆像超載的發電機，而團隊處於低頻待機，能量無法有效傳導與分配。'
     },
     'B3': {
         title: '診斷類型：B3 執行內耗型',
-        field: '執行場域', // 🟢 新增
+        field: '執行場域',
         desc: '特徵：團隊頻率不對頻，簡單的事情需要反覆溝通，內耗大於產出。',
         analysis: '您的能量場存在「破口與亂流」。指令下達後會產生雜訊，導致執行動作變形，團隊共振效應極低。'
     },
     'B4': {
         title: '診斷類型：B4 財富淤積型',
-        field: '財富場域', // 🟢 新增
+        field: '財富場域',
         desc: '特徵：賺得到但留不住，或是現金流長期緊繃，如同血管硬化。',
         analysis: '這是最緊急的「能量淤塞」。財富能量流動受阻，如果不疏通底層恐懼與限制性信念，注入再多資源都會流失。'
     }
@@ -142,7 +146,6 @@ function submitForm() {
         document.getElementById('statusTitle').innerText = resultData.title;
         document.getElementById('statusDesc').innerText = resultData.desc;
         
-        // 🟢 動態更新「量子鎖定文字」
         const lockText = document.getElementById('quantumLockText');
         if (lockText) {
             lockText.innerText = `系統已鎖定 ${resultData.field}，點擊按鈕連結全球資料庫...`;
@@ -250,6 +253,9 @@ function typeWriterEffect(text, element, index = 0) {
     }
 }
 
+// =================================================================
+// 🟢 Modal 邏輯 (包含 A/B 選項的峰值文案)
+// =================================================================
 function handleChoice(choice) {
     const modal = document.getElementById('peakModal');
     const body = document.getElementById('modalBodyContent');
@@ -261,12 +267,19 @@ function handleChoice(choice) {
     actionContainer.innerHTML = ''; 
 
     if (choice === 'A') {
+        // 🟢 選項 A：賦能與確認
         body.innerHTML = `
-            <p><strong>${name} 您好，</strong></p>
+            <p style="font-size:1.1rem; font-weight:bold;">${name} 您好，</p>
             <p>您即將啟動 <strong>72小時免費頻率共振測試</strong>。</p>
-            <hr style="border:0; border-top:1px dashed #ccc; margin:10px 0;">
-            <p style="font-size:0.9em; color:#555;">請確認您的資料：<br>Email: <strong>${email}</strong></p>
-            <p style="color:#666; font-size:0.9em; margin-top:5px;">點擊按鈕將開啟微信/Line，本頁面會保留。</p>
+            
+            <div style="background:rgba(59, 130, 246, 0.1); border-left:3px solid #3b82f6; padding:10px 15px; margin:20px 0; font-size:0.95rem; line-height:1.5; color:#cbd5e1; font-style:italic;">
+                <span style="color:#3b82f6; font-weight:bold;">🚀 來自場域的訊息：</span><br>
+                「決心，是宇宙最強的頻率。<br>當您選擇『看見』的那一刻，校準就已經開始了。」
+            </div>
+
+            <hr style="border:0; border-top:1px dashed #475569; margin:15px 0;">
+            <p style="font-size:0.9em; color:#94a3b8;">請確認您的資料：<br>Email: <span style="color:#fff;">${email}</span></p>
+            <p style="color:#94a3b8; font-size:0.9em; margin-top:5px;">點擊按鈕將開啟 Line，本頁面會保留。</p>
         `;
         const btn = document.createElement('button');
         btn.type = "button";
@@ -279,17 +292,27 @@ function handleChoice(choice) {
         actionContainer.appendChild(btn);
 
     } else {
+        // 🟢 選項 B：挽留與洞察
         body.innerHTML = `
-            <p><strong>${name} 您好，</strong></p>
+            <p style="font-size:1.1rem; font-weight:bold;">${name} 您好，</p>
             <p>您選擇僅獲取報告。我們已記錄需求。</p>
-            <hr style="border:0; border-top:1px dashed #ccc; margin:10px 0;">
-            <p><strong>系統將把診斷報告發送至：</strong><br><span style="color:#2563eb; font-weight:bold;">${email}</span></p>
-            <p style="font-size:0.9em; color:#666; margin-top:5px;">(若信箱有誤，請點擊左下角修改)</p>
+            
+            <div style="background:rgba(245, 158, 11, 0.1); border-left:3px solid #f59e0b; padding:10px 15px; margin:20px 0; font-size:0.95rem; line-height:1.5; color:#cbd5e1; font-style:italic;">
+                <span style="color:#f59e0b; font-weight:bold;">💡 顧問的洞察：</span><br>
+                「看見問題只是第一步，穿越它需要能量。<br>願這份報告，成為您打破慣性的第一道光。」
+            </div>
+
+            <hr style="border:0; border-top:1px dashed #475569; margin:15px 0;">
+            
+            <p style="margin-bottom:5px;">系統將把診斷報告發送至：</p>
+            <p style="color:#3b82f6; font-weight:bold; font-size:1.1rem; margin:0;">${email}</p>
+            <p style="font-size:0.85rem; color:#64748b; margin-top:5px;">(若信箱有誤，請點擊左下角修改)</p>
         `;
+        
         const btn = document.createElement('button');
         btn.type = "button";
         btn.className = 'modal-btn';
-        btn.style.background = '#64748b';
+        btn.style.background = '#475569'; // 灰色按鈕，降低攻擊性
         btn.innerText = '👌 我知道了';
         btn.onclick = closeModal;
         actionContainer.appendChild(btn);
