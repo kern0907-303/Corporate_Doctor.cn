@@ -254,7 +254,7 @@ function typeWriterEffect(text, element, index = 0) {
 }
 
 // =================================================================
-// 🟢 Modal 邏輯 (包含 A/B 選項的峰值文案)
+// 🟢 Modal 邏輯 (文字顏色全數修正為高對比白色)
 // =================================================================
 function handleChoice(choice) {
     const modal = document.getElementById('peakModal');
@@ -267,19 +267,19 @@ function handleChoice(choice) {
     actionContainer.innerHTML = ''; 
 
     if (choice === 'A') {
-        // 🟢 選項 A：賦能與確認
+        // 🟢 選項 A：賦能與確認 (修正文字顏色)
         body.innerHTML = `
-            <p style="font-size:1.1rem; font-weight:bold;">${name} 您好，</p>
-            <p>您即將啟動 <strong>72小時免費頻率共振測試</strong>。</p>
+            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">${name} 您好，</p>
+            <p style="color:#e2e8f0; font-size:1rem;">您即將啟動 <strong>72小時免費頻率共振測試</strong>。</p>
             
-            <div style="background:rgba(59, 130, 246, 0.1); border-left:3px solid #3b82f6; padding:10px 15px; margin:20px 0; font-size:0.95rem; line-height:1.5; color:#cbd5e1; font-style:italic;">
-                <span style="color:#3b82f6; font-weight:bold;">🚀 來自場域的訊息：</span><br>
+            <div style="background:rgba(59, 130, 246, 0.2); border-left:4px solid #3b82f6; padding:15px; margin:20px 0; font-size:1rem; line-height:1.6; color:#ffffff; font-style:italic;">
+                <span style="color:#60a5fa; font-weight:bold;">🚀 來自場域的訊息：</span><br>
                 「決心，是宇宙最強的頻率。<br>當您選擇『看見』的那一刻，校準就已經開始了。」
             </div>
 
-            <hr style="border:0; border-top:1px dashed #475569; margin:15px 0;">
-            <p style="font-size:0.9em; color:#94a3b8;">請確認您的資料：<br>Email: <span style="color:#fff;">${email}</span></p>
-            <p style="color:#94a3b8; font-size:0.9em; margin-top:5px;">點擊按鈕將開啟 Line，本頁面會保留。</p>
+            <hr style="border:0; border-top:1px dashed #64748b; margin:20px 0;">
+            <p style="font-size:0.95rem; color:#cbd5e1;">請確認您的資料：<br>Email: <span style="color:#ffffff; font-weight:bold;">${email}</span></p>
+            <p style="color:#94a3b8; font-size:0.85rem; margin-top:10px;">點擊按鈕將開啟 Line，本頁面會保留。</p>
         `;
         const btn = document.createElement('button');
         btn.type = "button";
@@ -292,27 +292,27 @@ function handleChoice(choice) {
         actionContainer.appendChild(btn);
 
     } else {
-        // 🟢 選項 B：挽留與洞察
+        // 🟢 選項 B：挽留與洞察 (修正文字顏色)
         body.innerHTML = `
-            <p style="font-size:1.1rem; font-weight:bold;">${name} 您好，</p>
-            <p>您選擇僅獲取報告。我們已記錄需求。</p>
+            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">${name} 您好，</p>
+            <p style="color:#e2e8f0; font-size:1rem;">您選擇僅獲取報告。我們已記錄需求。</p>
             
-            <div style="background:rgba(245, 158, 11, 0.1); border-left:3px solid #f59e0b; padding:10px 15px; margin:20px 0; font-size:0.95rem; line-height:1.5; color:#cbd5e1; font-style:italic;">
-                <span style="color:#f59e0b; font-weight:bold;">💡 顧問的洞察：</span><br>
+            <div style="background:rgba(245, 158, 11, 0.15); border-left:4px solid #f59e0b; padding:15px; margin:20px 0; font-size:1rem; line-height:1.6; color:#ffffff; font-style:italic;">
+                <span style="color:#fbbf24; font-weight:bold;">💡 顧問的洞察：</span><br>
                 「看見問題只是第一步，穿越它需要能量。<br>願這份報告，成為您打破慣性的第一道光。」
             </div>
 
-            <hr style="border:0; border-top:1px dashed #475569; margin:15px 0;">
+            <hr style="border:0; border-top:1px dashed #64748b; margin:20px 0;">
             
-            <p style="margin-bottom:5px;">系統將把診斷報告發送至：</p>
-            <p style="color:#3b82f6; font-weight:bold; font-size:1.1rem; margin:0;">${email}</p>
-            <p style="font-size:0.85rem; color:#64748b; margin-top:5px;">(若信箱有誤，請點擊左下角修改)</p>
+            <p style="margin-bottom:5px; color:#cbd5e1;">系統將把診斷報告發送至：</p>
+            <p style="color:#ffffff; font-weight:bold; font-size:1.1rem; margin:0;">${email}</p>
+            <p style="font-size:0.85rem; color:#94a3b8; margin-top:5px;">(若信箱有誤，請點擊左下角修改)</p>
         `;
         
         const btn = document.createElement('button');
         btn.type = "button";
         btn.className = 'modal-btn';
-        btn.style.background = '#475569'; // 灰色按鈕，降低攻擊性
+        btn.style.background = '#475569'; // 灰色按鈕
         btn.innerText = '👌 我知道了';
         btn.onclick = closeModal;
         actionContainer.appendChild(btn);
