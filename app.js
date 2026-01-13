@@ -1,8 +1,8 @@
 // =================================================================
-// 🔴 CONFIG (請確認 Key 已填寫正確)
+// 🔴 CONFIG (请确认 Key 已填写正确)
 // =================================================================
 const COZE_CONFIG = {
-// 👇 請將剛剛 Google Apps Script 部署的網址貼在這裡
+// 👇 请将刚刚 Google Apps Script 部署的网址贴在这里
     api_url: 'https://api.coze.cn/open_api/v2/chat',
 
     api_url: 'https://api.coze.cn/open_api/v2/chat',
@@ -13,18 +13,18 @@ const COZE_CONFIG = {
 };
 
 // =================================================================
-// 1. 導航邏輯
+// 1. 导航逻辑
 // =================================================================
 let currentStep = 0;
 const totalSteps = 14; 
 
 function nextStep() {
     if (currentStep === 0) {
-        // 🟢 驗證改為檢查 userContact
+        // 🟢 验证改为检查 userContact
         const name = document.getElementById('userName').value;
         const contact = document.getElementById('userContact').value;
-        if (!name) { alert("請填寫您的稱呼"); return; }
-        if (!contact) { alert("請填寫微信號或手機號，以便接收報告"); return; }
+        if (!name) { alert("请填写您的称呼"); return; }
+        if (!contact) { alert("请填写微信号或手机号，以便接收报告"); return; }
     }
     document.querySelector(`.step-card[data-step="${currentStep}"]`).classList.add('hidden');
     currentStep++;
@@ -49,7 +49,7 @@ function updateProgress() {
 }
 
 // =================================================================
-// 2. 核心算法：計算瓶頸 (Scoring Engine)
+// 2. 核心算法：计算瓶颈 (Scoring Engine)
 // =================================================================
 function calculateDiagnosis() {
     const getVals = (name) => {
@@ -59,31 +59,31 @@ function calculateDiagnosis() {
     
     let scores = { B1: 0, B2: 0, B3: 0, B4: 0 };
 
-    // Q1 權重
+    // Q1 权重
     const q1 = getVals('q1');
-    if (q1.includes('新客來源不穩') || q1.includes('成交率不如預期')) scores.B1 += 3;
-    if (q1.includes('決策常被拖慢') || q1.includes('老闆負擔過重')) scores.B2 += 3;
-    if (q1.includes('團隊執行力不一致') || q1.includes('人员留不住')) scores.B3 += 3;
-    if (q1.includes('现金流壓力')) scores.B4 += 4; 
+    if (q1.includes('新客来源不稳') || q1.includes('成交率不如预期')) scores.B1 += 3;
+    if (q1.includes('决策常被拖慢') || q1.includes('老板负担过重')) scores.B2 += 3;
+    if (q1.includes('团队执行力不一致') || q1.includes('人员留不住')) scores.B3 += 3;
+    if (q1.includes('现金流压力')) scores.B4 += 4; 
 
-    // Q2 權重
+    // Q2 权重
     const q2 = getVals('q2');
-    if (q2.includes('新客成長')) scores.B1 += 2;
-    if (q2.includes('老闆壓力下降')) scores.B2 += 2;
-    if (q2.includes('團隊穩定与效率')) scores.B3 += 2;
+    if (q2.includes('新客成长')) scores.B1 += 2;
+    if (q2.includes('老板压力下降')) scores.B2 += 2;
+    if (q2.includes('团队稳定与效率')) scores.B3 += 2;
     if (q2.includes('现金流安全感')) scores.B4 += 2;
 
-    // Q7 權重
+    // Q7 权重
     const q7 = getVals('q7');
-    if (q7.includes('獲客沒有穩定方法')) scores.B1 += 2;
-    if (q7.includes('老闆是最大瓶颈')) scores.B2 += 3;
-    if (q7.includes('團隊執行力長期不穩')) scores.B3 += 2;
-    if (q7.includes('现金流一直偏緊')) scores.B4 += 3;
+    if (q7.includes('获客没有稳定方法')) scores.B1 += 2;
+    if (q7.includes('老板是最大瓶颈')) scores.B2 += 3;
+    if (q7.includes('团队执行力长期不稳')) scores.B3 += 2;
+    if (q7.includes('现金流一直偏紧')) scores.B4 += 3;
 
-    // Q8 權重
+    // Q8 权重
     const q8 = getVals('q8');
-    if (q8.includes('業績明顯下滑')) scores.B1 += 2;
-    if (q8.includes('现金流突然吃緊')) scores.B4 += 4;
+    if (q8.includes('业绩明显下滑')) scores.B1 += 2;
+    if (q8.includes('现金流突然吃紧')) scores.B4 += 4;
 
     let maxType = 'B2'; 
     let maxScore = -1;
@@ -101,36 +101,36 @@ function calculateDiagnosis() {
     return maxType;
 }
 
-// 結果文案庫
+// 结果文案库
 const RESULTS_CONTENT = {
     'B1': {
-        title: '診斷類型：B1 市場閉塞型',
-        field: '市場場域',
-        desc: '特徵：好產品卻沒人看見，客源不穩定，像是在對著空曠的房間演講。',
-        analysis: '您的能量卡在「對外輸出的管道」。不是產品不好，而是連結市場的頻率斷裂，導致價值無法變現。'
+        title: '诊断类型：B1 市场闭塞型',
+        field: '市场场域',
+        desc: '特征：好产品却没人看见，客源不稳定，像是在对著空旷的房间演讲。',
+        analysis: '您的能量卡在「对外输出的管道」。不是产品不好，而是连结市场的频率断裂，导致价值无法变现。'
     },
     'B2': {
-        title: '診斷類型：B2 管理效能型',
-        field: '管理場域',
-        desc: '特徵：決策速度快但落實難，老闆容易成為唯一驅動力，身心俱疲。',
-        analysis: '您的能量呈現「單點過熱」。老闆像超載的發電機，而團隊處於低頻待機，能量無法有效傳導與分配。'
+        title: '诊断类型：B2 管理效能型',
+        field: '管理场域',
+        desc: '特征：决策速度快但落实难，老板容易成为唯一驱动力，身心俱疲。',
+        analysis: '您的能量呈现「单点过热」。老板像超载的发电机，而团队处于低频待机，能量无法有效传导与分配。'
     },
     'B3': {
-        title: '診斷類型：B3 執行內耗型',
-        field: '執行場域',
-        desc: '特徵：團隊頻率不對頻，簡單的事情需要反覆溝通，內耗大於產出。',
-        analysis: '您的能量場存在「破口與亂流」。指令下達後會產生雜訊，導致執行動作變形，團隊共振效應極低。'
+        title: '诊断类型：B3 执行内耗型',
+        field: '执行场域',
+        desc: '特征：团队频率不对频，简单的事情需要反复沟通，内耗大于产出。',
+        analysis: '您的能量场存在「破口与乱流」。指令下达后会产生杂讯，导致执行动作变形，团队共振效应极低。'
     },
     'B4': {
-        title: '診斷類型：B4 財富淤積型',
-        field: '財富場域',
-        desc: '特徵：賺得到但留不住，或是現金流長期緊繃，如同血管硬化。',
-        analysis: '這是最緊急的「能量淤塞」。財富能量流動受阻，如果不疏通底層恐懼與限制性信念，注入再多資源都會流失。'
+        title: '诊断类型：B4 财富淤积型',
+        field: '财富场域',
+        desc: '特征：赚得到但留不住，或是现金流长期紧绷，如同血管硬化。',
+        analysis: '这是最紧急的「能量淤塞」。财富能量流动受阻，如果不疏通底层恐惧与限制性信念，注入再多资源都会流失。'
     }
 };
 
 // =================================================================
-// 3. 提交表單
+// 3. 提交表单
 // =================================================================
 let finalResultType = 'B2'; 
 
@@ -154,7 +154,7 @@ function submitForm() {
         
         const lockText = document.getElementById('quantumLockText');
         if (lockText) {
-            lockText.innerText = `系統已鎖定 ${resultData.field}，點擊按鈕連結全球資料庫...`;
+            lockText.innerText = `系统已锁定 ${resultData.field}，点击按钮连结全球资料库...`;
         }
 
         const analysisBlock = document.querySelectorAll('.insight-block p')[2]; 
@@ -184,17 +184,17 @@ async function runCozeAnalysis() {
 
     if (!COZE_CONFIG.api_token || !COZE_CONFIG.bot_id) {
         resultArea.style.display = 'block';
-        resultArea.innerHTML = "<span style='color:red;'>❌ 錯誤：API Key 未設定。</span>";
+        resultArea.innerHTML = "<span style='color:red;'>❌ 错误：API Key 未设定。</span>";
         return;
     }
 
     btn.disabled = true;
-    btn.innerHTML = `<span style="font-style:italic;">⚡ 正在校準 TimeWaver 頻率...</span>`;
+    btn.innerHTML = `<span style="font-style:italic;">⚡ 正在校准 TimeWaver 频率...</span>`;
     resultArea.style.display = 'block';
     resultArea.innerHTML = ""; 
     
     const typeName = RESULTS_CONTENT[finalResultType].title.split('：')[1];
-    await typeWriterSimple(`正在連結初八企業顧問大腦...\n鎖定診斷類型：${typeName}...\n校準 ${finalResultType} 場域能量參數...\n--------------------------------\n`, resultArea);
+    await typeWriterSimple(`正在连结初八企业顾问大脑...\n锁定诊断类型：${typeName}...\n校准 ${finalResultType} 场域能量参数...\n--------------------------------\n`, resultArea);
 
     const diagnosisData = {
         "bottleneck": finalResultType,
@@ -214,7 +214,7 @@ async function runCozeAnalysis() {
                 "conversation_id": "conv_" + Date.now(),
                 "bot_id": COZE_CONFIG.bot_id,
                 "user": "vip_demo_user",
-                "query": `[初八系統診斷數據] ${JSON.stringify(diagnosisData)}`,
+                "query": `[初八系统诊断数据] ${JSON.stringify(diagnosisData)}`,
                 "stream": false
             })
         });
@@ -237,14 +237,14 @@ async function runCozeAnalysis() {
             }
         } else {
             console.log("Coze Response:", data);
-            throw new Error("API 回傳格式異常");
+            throw new Error("API 回传格式异常");
         }
 
     } catch (error) {
         console.error("Coze Error Details:", error);
-        resultArea.innerHTML += `\n\n<span style="color:red;">⚠️ 連線異常：${error.message}</span>`;
+        resultArea.innerHTML += `\n\n<span style="color:red;">⚠️ 连线异常：${error.message}</span>`;
         btn.disabled = false;
-        btn.innerHTML = "⚡ 重新啟動";
+        btn.innerHTML = "⚡ 重新启动";
     }
 }
 
@@ -260,23 +260,23 @@ function typeWriterEffect(text, element, index = 0) {
 }
 
 // =================================================================
-// 🚀 新增：發送資料到 Coze Bot (作為資料庫)
+// 🚀 新增：发送资料到 Coze Bot (作为资料库)
 // =================================================================
 async function sendDataToCoze(userChoice) {
     const name = document.getElementById('userName').value;
     const contact = document.getElementById('userContact').value;
     const company = document.getElementById('companyName').value;
     
-    // 組合訊息 (給 Coze 機器人看的日誌)
+    // 组合讯息 (给 Coze 机器人看的日志)
     const logMessage = `
-    【新客戶名單】
+    【新客户名单】
     --------------------
     姓名：${name}
-    聯繫：${contact}
+    联系：${contact}
     公司：${company}
-    診斷：${finalResultType}
-    意向：${userChoice === 'A' ? '🔥 高 (選擇測試)' : '❄️ 低 (僅看報告)'}
-    時間：${new Date().toLocaleString()}
+    诊断：${finalResultType}
+    意向：${userChoice === 'A' ? '🔥 高 (选择测试)' : '❄️ 低 (仅看报告)'}
+    时间：${new Date().toLocaleString()}
     --------------------
     `;
 
@@ -291,7 +291,7 @@ async function sendDataToCoze(userChoice) {
                 "conversation_id": "lead_" + Date.now(),
                 "bot_id": COZE_CONFIG.bot_id,
                 "user": "lead_collector",
-                "query": logMessage, // 把客戶資料當作對話發送
+                "query": logMessage, // 把客户资料当作对话发送
                 "stream": false
             })
         });
@@ -302,36 +302,36 @@ async function sendDataToCoze(userChoice) {
 }
 
 // =================================================================
-// 🟢 Modal 邏輯 (QR Code 版 + 自動發送資料)
+// 🟢 Modal 逻辑 (QR Code 版 + 自动发送资料)
 // =================================================================
 function handleChoice(choice) {
     const modal = document.getElementById('peakModal');
     const body = document.getElementById('modalBodyContent');
     const actionContainer = document.getElementById('modalActionContainer');
     
-    // 🟢 觸發背景發送 (這是您的資料庫)
+    // 🟢 触发背景发送 (这是您的资料库)
     sendDataToCoze(choice);
     
     actionContainer.innerHTML = ''; 
 
-    // 假圖片 (請替換成您真實的 QR Code)
+    // 假图片 (请替换成您真实的 QR Code)
     const qrCodeWeCom = "https://placehold.co/200x200/2563eb/ffffff?text=WeCom+QR";
     const qrCodeOA = "https://placehold.co/200x200/475569/ffffff?text=Official+Account";
 
     if (choice === 'A') {
-        // 🟢 選項 A：企業微信 (高意向)
+        // 🟢 选项 A：企业微信 (高意向)
         body.innerHTML = `
-            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">已啟動高頻通道</p>
-            <p style="color:#e2e8f0; font-size:1rem;">為了確保頻率校準的精確性，<br>請直接添加首席顧問的企業微信。</p>
+            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">已启动高频通道</p>
+            <p style="color:#e2e8f0; font-size:1rem;">为了确保频率校准的精确性，<br>请直接添加首席顾问的企业微信。</p>
             
             <div style="margin:20px 0; text-align:center;">
                 <img src="${qrCodeWeCom}" style="border-radius:10px; border:3px solid #3b82f6; width:180px; height:180px;">
-                <p style="color:#60a5fa; font-size:0.9rem; margin-top:10px;">掃碼後請發送代碼：<strong>「啟動測試」</strong></p>
+                <p style="color:#60a5fa; font-size:0.9rem; margin-top:10px;">扫码后请发送代码：<strong>「启动测试」</strong></p>
             </div>
 
             <div style="background:rgba(59, 130, 246, 0.2); border-left:4px solid #3b82f6; padding:15px; margin:20px 0; font-size:0.95rem; color:#ffffff; font-style:italic;">
-                <span style="color:#60a5fa; font-weight:bold;">🚀 顧問留言：</span><br>
-                「決心是宇宙最強的頻率。當您掃碼的那一刻，底層校準就已經開始了。」
+                <span style="color:#60a5fa; font-weight:bold;">🚀 顾问留言：</span><br>
+                「决心是宇宙最强的频率。当您扫码的那一刻，底层校准就已经开始了。」
             </div>
         `;
         const btn = document.createElement('button');
@@ -342,19 +342,19 @@ function handleChoice(choice) {
         actionContainer.appendChild(btn);
 
     } else {
-        // 🟢 選項 B：公眾號 (低意向)
+        // 🟢 选项 B：公众号 (低意向)
         body.innerHTML = `
-            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">報告已生成 (加密版)</p>
-            <p style="color:#e2e8f0; font-size:1rem;">為了保護您的企業隱私，報告已上傳至雲端保險箱。</p>
+            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">报告已生成 (加密版)</p>
+            <p style="color:#e2e8f0; font-size:1rem;">为了保护您的企业隐私，报告已上传至云端保险箱。</p>
             
             <div style="margin:20px 0; text-align:center;">
                 <img src="${qrCodeOA}" style="border-radius:10px; border:3px solid #94a3b8; width:180px; height:180px;">
-                <p style="color:#cbd5e1; font-size:0.9rem; margin-top:10px;">關注公眾號，回覆：<strong>「B2報告」</strong><br>即可獲取完整分析。</p>
+                <p style="color:#cbd5e1; font-size:0.9rem; margin-top:10px;">关注公众号，回复：<strong>「B2报告」</strong><br>即可获取完整分析。</p>
             </div>
 
             <div style="background:rgba(245, 158, 11, 0.15); border-left:4px solid #f59e0b; padding:15px; margin:20px 0; font-size:0.95rem; color:#ffffff; font-style:italic;">
-                <span style="color:#fbbf24; font-weight:bold;">💡 顧問的洞察：</span><br>
-                「看見問題只是第一步。願這份報告，成為您打破慣性的第一道光。」
+                <span style="color:#fbbf24; font-weight:bold;">💡 顾问的洞察：</span><br>
+                「看见问题只是第一步。愿这份报告，成为您打破惯性的第一道光。」
             </div>
         `;
         
@@ -362,7 +362,7 @@ function handleChoice(choice) {
         btn.type = "button";
         btn.className = 'modal-btn';
         btn.style.background = '#475569'; 
-        btn.innerText = '關閉視窗';
+        btn.innerText = '关闭视窗';
         btn.onclick = closeModal;
         actionContainer.appendChild(btn);
     }

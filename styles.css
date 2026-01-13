@@ -120,7 +120,7 @@ body {
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 /* =========================================
-   🖥️ 儀表板結果頁 (Dashboard UI)
+   🖥️ 仪表板结果页 (Dashboard UI)
    ========================================= */
 .results-container {
     background: rgba(15, 23, 42, 0.8);
@@ -147,7 +147,7 @@ body {
 #statusTitle { font-size: 1.6rem; margin: 0 0 5px 0; color: #fff; }
 #statusDesc { color: var(--accent); font-family: monospace; font-size: 1.1rem; }
 
-/* 儀表板分析模組 */
+/* 仪表板分析模组 */
 .interpretation-section {
     display: flex;
     flex-direction: column;
@@ -242,8 +242,8 @@ body {
 }
 
 .modal-content { 
-    background: #1e293b; /* 深藍底 */
-    color: #ffffff;      /* 強制白字 */
+    background: #1e293b; /* 深蓝底 */
+    color: #ffffff;      /* 强制白字 */
     border: 1px solid #334155; 
     box-shadow: 0 20px 60px rgba(0,0,0,0.9); 
     width: 100%; 
@@ -256,7 +256,7 @@ body {
     animation: slideUp 0.3s;
 }
 
-/* 確保 modal body 背景深一點，讓文字更明顯 */
+/* 确保 modal body 背景深一点，让文字更明显 */
 .modal-body { 
     background: rgba(0,0,0,0.4) !important; 
     color: #ffffff !important; 
@@ -277,7 +277,7 @@ body {
     cursor: pointer; 
 }
 
-/* 響應式設定 */
+/* 响应式设定 */
 @media (min-width: 768px) {
     .checkbox-group, .scale-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
     .interpretation-section { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
