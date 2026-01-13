@@ -18,6 +18,77 @@ const COZE_CONFIG = {
 let currentStep = 0;
 const totalSteps = 14; 
 
+
+// =================================================================
+// 1.5 每题最多选择 2 项 + 提示文案（仅新增提示与选择上限，不改原有流程）
+// =================================================================
+const MAX_CHOICES_PER_QUESTION = 2;
+const QUESTION_HINT_TEXT = '提示：本题最多可选 2 项，请选择你目前最需要调整的方向。';
+
+function enforceMaxChoicesPerQuestion() {
+    // 仅限制多选题（checkbox）。单选题（radio）不受影响
+    const boxes = document.querySelectorAll('input[type="checkbox"][name]');
+
+    boxes.forEach(box => {
+        // 避免重复绑定
+        if (box.dataset.maxChoiceBound === '1') return;
+        box.dataset.maxChoiceBound = '1';
+
+        box.addEventListener('change', (e) => {
+            const name = e.target.name;
+            if (!name) return;
+
+            // 只对 q1~q14 这类题目做限制
+            if (!/^q\d+$/i.test(name)) return;
+
+            const checked = document.querySelectorAll(`input[type="checkbox"][name="${name}"]:checked`);
+            if (checked.length > MAX_CHOICES_PER_QUESTION) {
+                // 超过上限：取消本次勾选
+                e.target.checked = false;
+                alert(`每题最多选择 ${MAX_CHOICES_PER_QUESTION} 项，请先取消一个选项再继续。`);
+            }
+        });
+    });
+}
+
+function injectQuestionHints() {
+    // 尝试在每个题目卡片中插入提示文案（不依赖特定结构，尽量兼容）
+    const cards = document.querySelectorAll('.step-card[data-step]');
+
+    cards.forEach(card => {
+        const step = Number(card.getAttribute('data-step'));
+        // 0 通常是信息填写页；大于 totalSteps 的可能是 loading/results，不插入
+        if (!Number.isFinite(step) || step <= 0 || step > totalSteps) return;
+
+        // 已经有提示就不重复插入
+        if (card.querySelector('.question-hint')) return;
+
+        const hint = document.createElement('p');
+        hint.className = 'question-hint';
+        hint.innerText = QUESTION_HINT_TEXT;
+
+        // 用最小侵入的方式加一点点可读性（不改 CSS 文件）
+        hint.style.margin = '10px 0 0 0';
+        hint.style.fontSize = '0.95rem';
+        hint.style.opacity = '0.85';
+
+        // 优先插在标题后面；找不到标题就插在卡片最前面
+        const titleEl = card.querySelector('h2, h3, .question-title, .step-title');
+        if (titleEl && titleEl.parentNode) {
+            titleEl.insertAdjacentElement('afterend', hint);
+        } else {
+            card.insertAdjacentElement('afterbegin', hint);
+        }
+    });
+}
+
+// DOM 准备好之后再执行，避免抓不到节点
+document.addEventListener('DOMContentLoaded', () => {
+    injectQuestionHints();
+    enforceMaxChoicesPerQuestion();
+});
+
+
 function nextStep() {
     if (currentStep === 0) {
         // 🟢 验证改为检查 userContact
@@ -373,3 +444,4 @@ function handleChoice(choice) {
 function closeModal() {
     document.getElementById('peakModal').classList.add('hidden');
 }
+
