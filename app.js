@@ -2,6 +2,7 @@
 // 🔴 CONFIG (请确认 Key 已填写正确)
 // =================================================================
 const COZE_CONFIG = {
+    // 👇 请将刚刚 Google Apps Script 部署的网址贴在这里
     api_url: 'https://api.coze.cn/open_api/v2/chat',
     // 您的 PAT Token (保持原样)
     api_token: 'pat_Tv62rVIFCCSmohdrOe7nVY3qCrJ4tHCq6PzAf2XgCkQch2FZXuqIPr4EuNyVuiIP', 
@@ -10,7 +11,7 @@ const COZE_CONFIG = {
 };
 
 // =================================================================
-// 🎨 行业人设字典 (新增功能：让 AI 说行话)
+// 🎨 行业人设字典 (让 AI 说行话)
 // =================================================================
 const INDUSTRY_PERSONAS = {
     "科技": "请扮演一位资深 CTO 或互联网产品专家。在解释瓶颈时，请使用'技术债'、'敏捷迭代'、'MVP'、'系统架构'等科技术语进行比喻。强调速度与扩展性的平衡。",
@@ -134,7 +135,6 @@ function calculateDiagnosis() {
     
     let scores = { B1: 0, B2: 0, B3: 0, B4: 0 };
 
-    // 简单计分逻辑 (保持原样)
     const q1 = getVals('q1');
     if (q1.includes('新客来源不稳') || q1.includes('成交率不如预期')) scores.B1 += 3;
     if (q1.includes('决策常被拖慢') || q1.includes('老板负担过重')) scores.B2 += 3;
@@ -225,7 +225,6 @@ function submitForm() {
             lockText.innerText = `系统已锁定 ${resultData.field}，点击按钮连结全球资料库...`;
         }
         
-        // 动态更新前端分析文案 (虽然 AI 会再出一次，但这里先给个静态的)
         const analysisBlock = document.querySelectorAll('.insight-block p')[2]; 
         if(analysisBlock) analysisBlock.innerText = resultData.analysis;
 
@@ -245,7 +244,7 @@ function editData() {
 }
 
 // =================================================================
-// ⚡️ Coze API 量子分析 (🟢 核心升级部分)
+// ⚡️ Coze API 量子分析
 // =================================================================
 async function runCozeAnalysis() {
     const btn = document.getElementById('analyzeBtn');
@@ -262,22 +261,19 @@ async function runCozeAnalysis() {
     resultArea.style.display = 'block';
     resultArea.innerHTML = ""; 
     
-    // 1. 获取用户选择的产业
     const industrySelect = document.getElementById('industry');
     const userIndustry = industrySelect.value || "其他";
-    
-    // 2. 从字典中获取对应的 Prompt
     const industryPrompt = INDUSTRY_PERSONAS[userIndustry] || INDUSTRY_PERSONAS["其他"];
-
     const typeName = RESULTS_CONTENT[finalResultType].title.split('：')[1];
+
     await typeWriterSimple(`正在连结初八企业顾问大脑...\n检测到产业特征：[${userIndustry}]...\n锁定诊断类型：${typeName}...\n--------------------------------\n`, resultArea);
 
     const diagnosisData = {
         "bottleneck": finalResultType,
         "context": RESULTS_CONTENT[finalResultType].desc,
         "user_name": document.getElementById('userName').value,
-        "industry": userIndustry, // 告诉 AI 产业
-        "system_instruction": industryPrompt // 告诉 AI 怎么扮演
+        "industry": userIndustry,
+        "system_instruction": industryPrompt
     };
 
     try {
@@ -292,7 +288,6 @@ async function runCozeAnalysis() {
                 "conversation_id": "conv_" + Date.now(),
                 "bot_id": COZE_CONFIG.bot_id,
                 "user": "vip_demo_user",
-                // 🟢 关键：把 industryPrompt 塞进 query 里，强制 AI 听从
                 "query": `[初八系统指令] 请根据以下资料生成诊断。${industryPrompt} \n 用户数据：${JSON.stringify(diagnosisData)}`,
                 "stream": false
             })
@@ -345,7 +340,7 @@ async function sendDataToCoze(userChoice) {
     const name = document.getElementById('userName').value;
     const contact = document.getElementById('userContact').value;
     const company = document.getElementById('companyName').value;
-    const industry = document.getElementById('industry').value || "未选择"; // 🟢 记录产业
+    const industry = document.getElementById('industry').value || "未选择";
     
     const logMessage = `
     【新客户名单】
@@ -353,7 +348,7 @@ async function sendDataToCoze(userChoice) {
     姓名：${name}
     联系：${contact}
     公司：${company}
-    产业：${industry}  <-- 新增
+    产业：${industry}
     诊断：${finalResultType}
     意向：${userChoice === 'A' ? '🔥 高 (选择测试)' : '❄️ 低 (仅看报告)'}
     时间：${new Date().toLocaleString()}
@@ -382,7 +377,7 @@ async function sendDataToCoze(userChoice) {
 }
 
 // =================================================================
-// 🟢 Modal 逻辑 (保持原样)
+// 🟢 Modal 逻辑 (已修复文字颜色与深色模式冲突)
 // =================================================================
 function handleChoice(choice) {
     const modal = document.getElementById('peakModal');
@@ -397,16 +392,27 @@ function handleChoice(choice) {
     const qrCodeWeCom = "https://placehold.co/200x200/2563eb/ffffff?text=WeCom+QR";
     const qrCodeOA = "https://placehold.co/200x200/475569/ffffff?text=Official+Account";
 
+    // 🎨 样式定义：统一管理颜色
+    const styleHeader = "font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;"; // 纯白标题
+    const styleDesc = "color:#e2e8f0; font-size:1rem;"; // 浅灰说明
+    const styleBoxBlue = "background:rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.4); border-radius:8px; padding:15px; margin:20px 0; font-size:0.95rem; color:#f8fafc; font-style:italic;"; // 蓝色半透明底 + 白字
+    const styleBoxOrange = "background:rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); border-radius:8px; padding:15px; margin:20px 0; font-size:0.95rem; color:#f8fafc; font-style:italic;"; // 橙色半透明底 + 白字
+    const styleLabelBlue = "color:#60a5fa; font-weight:bold;"; // 亮蓝标签
+    const styleLabelOrange = "color:#fbbf24; font-weight:bold;"; // 亮黄标签
+    const styleSubText = "color:#cbd5e1; font-size:0.9rem; margin-top:10px;"; // 二级浅灰字
+
     if (choice === 'A') {
         body.innerHTML = `
-            <p style="font-size:1.2rem; font-weight:bold; color:#0b1121; margin-bottom:15px;">已启动高频通道</p>
-            <p style="color:#475569; font-size:1rem;">为了确保频率校准的精确性，<br>请直接添加首席顾问的企业微信。</p>
+            <p style="${styleHeader}">已启动高频通道</p>
+            <p style="${styleDesc}">为了确保频率校准的精确性，<br>请直接添加首席顾问的企业微信。</p>
+            
             <div style="margin:20px 0; text-align:center;">
-                <img src="${qrCodeWeCom}" style="border-radius:10px; border:3px solid #3b82f6; width:180px; height:180px;">
-                <p style="color:#2563eb; font-size:0.9rem; margin-top:10px;">扫码后请发送代码：<strong>“启动测试”</strong></p>
+                <img src="${qrCodeWeCom}" style="border-radius:10px; border:2px solid #3b82f6; width:180px; height:180px;">
+                <p style="${styleSubText}">扫码后请发送代码：<strong style="color:#ffffff;">“启动测试”</strong></p>
             </div>
-            <div style="background:rgba(59, 130, 246, 0.1); border-left:4px solid #3b82f6; padding:15px; margin:20px 0; font-size:0.95rem; color:#1e293b; font-style:italic;">
-                <span style="color:#2563eb; font-weight:bold;">🚀 顾问留言：</span><br>
+
+            <div style="${styleBoxBlue}">
+                <span style="${styleLabelBlue}">🚀 顾问留言：</span><br>
                 “决心是宇宙最强的频率。当您扫码的那一刻，底层校准就已经开始了。”
             </div>
         `;
@@ -416,27 +422,33 @@ function handleChoice(choice) {
         btn.innerText = '完成，我已添加';
         btn.onclick = closeModal;
         actionContainer.appendChild(btn);
+
     } else {
         body.innerHTML = `
-            <p style="font-size:1.2rem; font-weight:bold; color:#0b1121; margin-bottom:15px;">报告已生成 (加密版)</p>
-            <p style="color:#475569; font-size:1rem;">为了保护您的企业隐私，报告已上传至云端保险箱。</p>
+            <p style="${styleHeader}">报告已生成 (加密版)</p>
+            <p style="${styleDesc}">为了保护您的企业隐私，报告已上传至云端保险箱。</p>
+            
             <div style="margin:20px 0; text-align:center;">
-                <img src="${qrCodeOA}" style="border-radius:10px; border:3px solid #94a3b8; width:180px; height:180px;">
-                <p style="color:#475569; font-size:0.9rem; margin-top:10px;">关注公众号，回复：<strong>“B2报告”</strong><br>即可获取完整分析。</p>
+                <img src="${qrCodeOA}" style="border-radius:10px; border:2px solid #94a3b8; width:180px; height:180px;">
+                <p style="${styleSubText}">关注公众号，回复：<strong style="color:#ffffff;">“B2报告”</strong><br>即可获取完整分析。</p>
             </div>
-            <div style="background:rgba(245, 158, 11, 0.1); border-left:4px solid #f59e0b; padding:15px; margin:20px 0; font-size:0.95rem; color:#1e293b; font-style:italic;">
-                <span style="color:#d97706; font-weight:bold;">💡 顾问的洞察：</span><br>
+
+            <div style="${styleBoxOrange}">
+                <span style="${styleLabelOrange}">💡 顾问的洞察：</span><br>
                 “看见问题只是第一步。愿这份报告，成为您打破惯性的第一道光。”
             </div>
         `;
+        
         const btn = document.createElement('button');
         btn.type = "button";
         btn.className = 'modal-btn';
-        btn.style.background = '#475569'; 
+        btn.style.background = '#334155'; // 按钮改为深灰蓝
+        btn.style.border = '1px solid #475569';
         btn.innerText = '关闭视窗';
         btn.onclick = closeModal;
         actionContainer.appendChild(btn);
     }
+    
     modal.classList.remove('hidden');
 }
 
