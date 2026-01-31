@@ -2,13 +2,10 @@
 // 🔴 CONFIG (请确认 Key 已填写正确)
 // =================================================================
 const COZE_CONFIG = {
-// 👇 请将刚刚 Google Apps Script 部署的网址贴在这里
     api_url: 'https://api.coze.cn/open_api/v2/chat',
-
-    api_url: 'https://api.coze.cn/open_api/v2/chat',
-    // 您的 PAT Token
+    // 您的 PAT Token (保持原样)
     api_token: 'pat_Tv62rVIFCCSmohdrOe7nVY3qCrJ4tHCq6PzAf2XgCkQch2FZXuqIPr4EuNyVuiIP', 
-    // 您的 Bot ID
+    // 您的 Bot ID (保持原样)
     bot_id: '7592910227734200320' 
 };
 
@@ -18,12 +15,11 @@ const COZE_CONFIG = {
 let currentStep = 0;
 const totalSteps = 14; 
 
-
 // =================================================================
-// 1.5 每题最多选择 2 项 + 提示文案（仅新增提示与选择上限，不改原有流程）
+// 1.5 每题最多选择 N 项 + 提示文案
 // =================================================================
-const MAX_CHOICES_PER_QUESTION = 2;
-const QUESTION_HINT_TEXT = '提示：本题最多可选 2 项，请选择你目前最需要调整的方向。';
+const MAX_CHOICES_PER_QUESTION = 3; // 🟢 已修改：放宽为 3 项
+const QUESTION_HINT_TEXT = '提示：请选择最关键的 3 项，以利系统精准诊断。';
 
 function enforceMaxChoicesPerQuestion() {
     // 仅限制多选题（checkbox）。单选题（radio）不受影响
@@ -52,7 +48,6 @@ function enforceMaxChoicesPerQuestion() {
 }
 
 function injectQuestionHints() {
-    // 尝试在每个题目卡片中插入提示文案（不依赖特定结构，尽量兼容）
     const cards = document.querySelectorAll('.step-card[data-step]');
 
     cards.forEach(card => {
@@ -60,17 +55,23 @@ function injectQuestionHints() {
         // 0 通常是信息填写页；大于 totalSteps 的可能是 loading/results，不插入
         if (!Number.isFinite(step) || step <= 0 || step > totalSteps) return;
 
-        // 已经有提示就不重复插入
+        // 🟢 关键修复：检查该卡片内是否有 checkbox
+        // 如果卡片内只有 radio (单选)，则不插入提示
+        const hasCheckbox = card.querySelector('input[type="checkbox"]');
+        if (!hasCheckbox) return; 
+
+        // 避免重复插入
         if (card.querySelector('.question-hint')) return;
 
         const hint = document.createElement('p');
         hint.className = 'question-hint';
         hint.innerText = QUESTION_HINT_TEXT;
 
-        // 用最小侵入的方式加一点点可读性（不改 CSS 文件）
+        // 样式设定：黄色字体，明显提示
         hint.style.margin = '10px 0 0 0';
         hint.style.fontSize = '0.95rem';
-        hint.style.opacity = '0.85';
+        hint.style.opacity = '0.9';
+        hint.style.color = '#f59e0b'; 
 
         // 优先插在标题后面；找不到标题就插在卡片最前面
         const titleEl = card.querySelector('h2, h3, .question-title, .step-title');
@@ -82,7 +83,7 @@ function injectQuestionHints() {
     });
 }
 
-// DOM 准备好之后再执行，避免抓不到节点
+// DOM 准备好之后再执行
 document.addEventListener('DOMContentLoaded', () => {
     injectQuestionHints();
     enforceMaxChoicesPerQuestion();
@@ -91,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function nextStep() {
     if (currentStep === 0) {
-        // 🟢 验证改为检查 userContact
+        // 验证基本资料
         const name = document.getElementById('userName').value;
         const contact = document.getElementById('userContact').value;
         if (!name) { alert("请填写您的称呼"); return; }
@@ -159,6 +160,7 @@ function calculateDiagnosis() {
     let maxType = 'B2'; 
     let maxScore = -1;
     
+    // 现金流优先判定逻辑
     if (scores.B4 >= 5) {
         maxType = 'B4';
     } else {
@@ -177,26 +179,26 @@ const RESULTS_CONTENT = {
     'B1': {
         title: '诊断类型：B1 市场闭塞型',
         field: '市场场域',
-        desc: '特征：好产品却没人看见，客源不稳定，像是在对著空旷的房间演讲。',
-        analysis: '您的能量卡在「对外输出的管道」。不是产品不好，而是连结市场的频率断裂，导致价值无法变现。'
+        desc: '特征：好产品却没人看见，客源不稳定，像是在对着空旷的房间演讲。',
+        analysis: '您的能量卡在“对外输出的管道”。不是产品不好，而是连结市场的频率断裂，导致价值无法变现。'
     },
     'B2': {
         title: '诊断类型：B2 管理效能型',
         field: '管理场域',
         desc: '特征：决策速度快但落实难，老板容易成为唯一驱动力，身心俱疲。',
-        analysis: '您的能量呈现「单点过热」。老板像超载的发电机，而团队处于低频待机，能量无法有效传导与分配。'
+        analysis: '您的能量呈现“单点过热”。老板像超载的发电机，而团队处于低频待机，能量无法有效传导与分配。'
     },
     'B3': {
         title: '诊断类型：B3 执行内耗型',
         field: '执行场域',
         desc: '特征：团队频率不对频，简单的事情需要反复沟通，内耗大于产出。',
-        analysis: '您的能量场存在「破口与乱流」。指令下达后会产生杂讯，导致执行动作变形，团队共振效应极低。'
+        analysis: '您的能量场存在“破口与乱流”。指令下达后会产生杂讯，导致执行动作变形，团队共振效应极低。'
     },
     'B4': {
         title: '诊断类型：B4 财富淤积型',
         field: '财富场域',
         desc: '特征：赚得到但留不住，或是现金流长期紧绷，如同血管硬化。',
-        analysis: '这是最紧急的「能量淤塞」。财富能量流动受阻，如果不疏通底层恐惧与限制性信念，注入再多资源都会流失。'
+        analysis: '这是最紧急的“能量淤塞”。财富能量流动受阻，如果不疏通底层恐惧与限制性信念，注入再多资源都会流失。'
     }
 };
 
@@ -331,7 +333,7 @@ function typeWriterEffect(text, element, index = 0) {
 }
 
 // =================================================================
-// 🚀 新增：发送资料到 Coze Bot (作为资料库)
+// 🚀 发送资料到 Coze Bot (作为资料库)
 // =================================================================
 async function sendDataToCoze(userChoice) {
     const name = document.getElementById('userName').value;
@@ -362,7 +364,7 @@ async function sendDataToCoze(userChoice) {
                 "conversation_id": "lead_" + Date.now(),
                 "bot_id": COZE_CONFIG.bot_id,
                 "user": "lead_collector",
-                "query": logMessage, // 把客户资料当作对话发送
+                "query": logMessage, 
                 "stream": false
             })
         });
@@ -373,14 +375,14 @@ async function sendDataToCoze(userChoice) {
 }
 
 // =================================================================
-// 🟢 Modal 逻辑 (QR Code 版 + 自动发送资料)
+// 🟢 Modal 逻辑
 // =================================================================
 function handleChoice(choice) {
     const modal = document.getElementById('peakModal');
     const body = document.getElementById('modalBodyContent');
     const actionContainer = document.getElementById('modalActionContainer');
     
-    // 🟢 触发背景发送 (这是您的资料库)
+    // 触发背景发送
     sendDataToCoze(choice);
     
     actionContainer.innerHTML = ''; 
@@ -390,19 +392,19 @@ function handleChoice(choice) {
     const qrCodeOA = "https://placehold.co/200x200/475569/ffffff?text=Official+Account";
 
     if (choice === 'A') {
-        // 🟢 选项 A：企业微信 (高意向)
+        // 选项 A：企业微信 (高意向)
         body.innerHTML = `
-            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">已启动高频通道</p>
-            <p style="color:#e2e8f0; font-size:1rem;">为了确保频率校准的精确性，<br>请直接添加首席顾问的企业微信。</p>
+            <p style="font-size:1.2rem; font-weight:bold; color:#0b1121; margin-bottom:15px;">已启动高频通道</p>
+            <p style="color:#475569; font-size:1rem;">为了确保频率校准的精确性，<br>请直接添加首席顾问的企业微信。</p>
             
             <div style="margin:20px 0; text-align:center;">
                 <img src="${qrCodeWeCom}" style="border-radius:10px; border:3px solid #3b82f6; width:180px; height:180px;">
-                <p style="color:#60a5fa; font-size:0.9rem; margin-top:10px;">扫码后请发送代码：<strong>「启动测试」</strong></p>
+                <p style="color:#2563eb; font-size:0.9rem; margin-top:10px;">扫码后请发送代码：<strong>“启动测试”</strong></p>
             </div>
 
-            <div style="background:rgba(59, 130, 246, 0.2); border-left:4px solid #3b82f6; padding:15px; margin:20px 0; font-size:0.95rem; color:#ffffff; font-style:italic;">
-                <span style="color:#60a5fa; font-weight:bold;">🚀 顾问留言：</span><br>
-                「决心是宇宙最强的频率。当您扫码的那一刻，底层校准就已经开始了。」
+            <div style="background:rgba(59, 130, 246, 0.1); border-left:4px solid #3b82f6; padding:15px; margin:20px 0; font-size:0.95rem; color:#1e293b; font-style:italic;">
+                <span style="color:#2563eb; font-weight:bold;">🚀 顾问留言：</span><br>
+                “决心是宇宙最强的频率。当您扫码的那一刻，底层校准就已经开始了。”
             </div>
         `;
         const btn = document.createElement('button');
@@ -413,19 +415,19 @@ function handleChoice(choice) {
         actionContainer.appendChild(btn);
 
     } else {
-        // 🟢 选项 B：公众号 (低意向)
+        // 选项 B：公众号 (低意向)
         body.innerHTML = `
-            <p style="font-size:1.2rem; font-weight:bold; color:#ffffff; margin-bottom:15px;">报告已生成 (加密版)</p>
-            <p style="color:#e2e8f0; font-size:1rem;">为了保护您的企业隐私，报告已上传至云端保险箱。</p>
+            <p style="font-size:1.2rem; font-weight:bold; color:#0b1121; margin-bottom:15px;">报告已生成 (加密版)</p>
+            <p style="color:#475569; font-size:1rem;">为了保护您的企业隐私，报告已上传至云端保险箱。</p>
             
             <div style="margin:20px 0; text-align:center;">
                 <img src="${qrCodeOA}" style="border-radius:10px; border:3px solid #94a3b8; width:180px; height:180px;">
-                <p style="color:#cbd5e1; font-size:0.9rem; margin-top:10px;">关注公众号，回复：<strong>「B2报告」</strong><br>即可获取完整分析。</p>
+                <p style="color:#475569; font-size:0.9rem; margin-top:10px;">关注公众号，回复：<strong>“B2报告”</strong><br>即可获取完整分析。</p>
             </div>
 
-            <div style="background:rgba(245, 158, 11, 0.15); border-left:4px solid #f59e0b; padding:15px; margin:20px 0; font-size:0.95rem; color:#ffffff; font-style:italic;">
-                <span style="color:#fbbf24; font-weight:bold;">💡 顾问的洞察：</span><br>
-                「看见问题只是第一步。愿这份报告，成为您打破惯性的第一道光。」
+            <div style="background:rgba(245, 158, 11, 0.1); border-left:4px solid #f59e0b; padding:15px; margin:20px 0; font-size:0.95rem; color:#1e293b; font-style:italic;">
+                <span style="color:#d97706; font-weight:bold;">💡 顾问的洞察：</span><br>
+                “看见问题只是第一步。愿这份报告，成为您打破惯性的第一道光。”
             </div>
         `;
         
@@ -444,4 +446,3 @@ function handleChoice(choice) {
 function closeModal() {
     document.getElementById('peakModal').classList.add('hidden');
 }
-
